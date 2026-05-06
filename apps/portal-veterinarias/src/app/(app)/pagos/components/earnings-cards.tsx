@@ -5,18 +5,21 @@ import { Card, CardAction, CardDescription, CardFooter, CardHeader, CardTitle } 
 import { Badge } from "@/components/ui/badge"
 import { useDemoMode } from "@/context/demo-mode"
 
-const demoMetrics = [
-  { title: "Ingresos brutos",      value: "$24,180", change: "+11.3%",    trend: "up"      as const, icon: DollarSign, footer: "Total facturado este mes",      subfooter: "248 consultas · mayo 2025" },
-  { title: "Comisión plataforma",  value: "$1,934",  change: "8% s/brutos",trend: "neutral" as const, icon: Percent,    footer: "Tarifa mensual Kate&Doug",      subfooter: "Incluye procesamiento de pagos" },
-  { title: "Impuestos retenidos",  value: "$2,659",  change: "IVA 16%",   trend: "neutral" as const, icon: Receipt,    footer: "Retención fiscal del período",   subfooter: "CFDI generado automáticamente" },
-  { title: "Pago neto del mes",    value: "$19,587", change: "+9.8%",     trend: "up"      as const, icon: Banknote,   footer: "Transferido a tu cuenta",        subfooter: "BBVA ••••4821" },
+type Trend = "up" | "down" | "neutral"
+type Metric = { title: string; value: string; change: string; trend: Trend; icon: React.ElementType; footer: string; subfooter: string }
+
+const demoMetrics: Metric[] = [
+  { title: "Ingresos brutos",      value: "$24,180", change: "+11.3%",     trend: "up",      icon: DollarSign, footer: "Total facturado este mes",      subfooter: "248 consultas · mayo 2025" },
+  { title: "Comisión plataforma",  value: "$1,934",  change: "8% s/brutos", trend: "neutral", icon: Percent,    footer: "Tarifa mensual Kate&Doug",      subfooter: "Incluye procesamiento de pagos" },
+  { title: "Impuestos retenidos",  value: "$2,659",  change: "IVA 16%",    trend: "neutral", icon: Receipt,    footer: "Retención fiscal del período",   subfooter: "CFDI generado automáticamente" },
+  { title: "Pago neto del mes",    value: "$19,587", change: "+9.8%",      trend: "up",      icon: Banknote,   footer: "Transferido a tu cuenta",        subfooter: "BBVA ••••4821" },
 ]
 
-const emptyMetrics = [
-  { title: "Ingresos brutos",      value: "$0",  change: "—", trend: "neutral" as const, icon: DollarSign, footer: "Sin actividad este mes",   subfooter: "—" },
-  { title: "Comisión plataforma",  value: "$0",  change: "—", trend: "neutral" as const, icon: Percent,    footer: "Tarifa mensual Kate&Doug", subfooter: "—" },
-  { title: "Impuestos retenidos",  value: "$0",  change: "—", trend: "neutral" as const, icon: Receipt,    footer: "Sin retenciones",          subfooter: "—" },
-  { title: "Pago neto del mes",    value: "$0",  change: "—", trend: "neutral" as const, icon: Banknote,   footer: "Sin transferencias",        subfooter: "—" },
+const emptyMetrics: Metric[] = [
+  { title: "Ingresos brutos",      value: "$0", change: "—", trend: "neutral", icon: DollarSign, footer: "Sin actividad este mes",   subfooter: "—" },
+  { title: "Comisión plataforma",  value: "$0", change: "—", trend: "neutral", icon: Percent,    footer: "Tarifa mensual Kate&Doug", subfooter: "—" },
+  { title: "Impuestos retenidos",  value: "$0", change: "—", trend: "neutral", icon: Receipt,    footer: "Sin retenciones",          subfooter: "—" },
+  { title: "Pago neto del mes",    value: "$0", change: "—", trend: "neutral", icon: Banknote,   footer: "Sin transferencias",        subfooter: "—" },
 ]
 
 export function EarningsCards() {
