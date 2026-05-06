@@ -1,0 +1,98 @@
+[
+  {
+    "id": 1,
+    "title": "Consulta General - Max",
+    "date": "11T09:00:00.000Z",
+    "time": "9:00 AM",
+    "duration": "30 min",
+    "type": "meeting",
+    "attendees": ["Rafael M.", "Ana G."],
+    "location": "Consultorio 1",
+    "color": "bg-blue-500",
+    "description": "Consulta general para revisión anual"
+  },
+  {
+    "id": 2,
+    "title": "Vacunación - Luna",
+    "date": "11T14:00:00.000Z",
+    "time": "2:00 PM",
+    "duration": "30 min",
+    "type": "task",
+    "attendees": ["Rafael M."],
+    "location": "Consultorio 2",
+    "color": "bg-purple-500",
+    "description": "Vacuna antirrábica y pentavalente"
+  },
+  {
+    "id": 3,
+    "title": "Examen de Sangre - Rocky",
+    "date": "15T10:00:00.000Z",
+    "time": "10:00 AM",
+    "duration": "1 hour",
+    "type": "event",
+    "attendees": ["Rafael M.", "Carlos S."],
+    "location": "Laboratorio",
+    "color": "bg-green-500",
+    "description": "Análisis de sangre completo"
+  },
+  {
+    "id": 4,
+    "title": "Cirugía - Milo",
+    "date": "18T08:00:00.000Z",
+    "time": "8:00 AM",
+    "duration": "2 hours",
+    "type": "meeting",
+    "attendees": ["Rafael M.", "María L.", "Pedro R."],
+    "location": "Quirófano",
+    "color": "bg-orange-500",
+    "description": "Esterilización programada"
+  },
+  {
+    "id": 5,
+    "title": "Limpieza Dental - Bella",
+    "date": "20T15:00:00.000Z",
+    "time": "3:00 PM",
+    "duration": "1 hour",
+    "type": "personal",
+    "attendees": ["Rafael M."],
+    "location": "Consultorio 1",
+    "color": "bg-pink-500",
+    "description": "Limpieza dental bajo sedación"
+  },
+  {
+    "id": 6,
+    "title": "Consulta - Coco",
+    "date": "22T11:00:00.000Z",
+    "time": "11:00 AM",
+    "duration": "30 min",
+    "type": "meeting",
+    "attendees": ["Rafael M."],
+    "location": "Consultorio 2",
+    "color": "bg-blue-500",
+    "description": "Seguimiento post-operatorio"
+  },
+  {
+    "id": 7,
+    "title": "Vacunación - Thor",
+    "date": "25T09:30:00.000Z",
+    "time": "9:30 AM",
+    "duration": "30 min",
+    "type": "task",
+    "attendees": ["Rafael M.", "Laura T."],
+    "location": "Consultorio 1",
+    "color": "bg-purple-500",
+    "description": "Refuerzo de vacunas anuales"
+  },
+  {
+    "id": 8,
+    "title": "Revisión - Nala",
+    "date": "27T16:00:00.000Z",
+    "time": "4:00 PM",
+    "duration": "45 min",
+    "type": "meeting",
+    "attendees": ["Rafael M."],
+    "location": "Consultorio 1",
+    "color": "bg-blue-500",
+    "description": "Revisión de piel y pelaje"
+  }
+]

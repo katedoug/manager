@@ -1,0 +1,37 @@
+[
+  {
+    "id": "consultas",
+    "name": "Consultas",
+    "color": "bg-blue-500",
+    "visible": true,
+    "type": "work"
+  },
+  {
+    "id": "vacunas",
+    "name": "Vacunas",
+    "color": "bg-purple-500",
+    "visible": true,
+    "type": "work"
+  },
+  {
+    "id": "cirugias",
+    "name": "Cirugías",
+    "color": "bg-orange-500",
+    "visible": true,
+    "type": "work"
+  },
+  {
+    "id": "examenes",
+    "name": "Exámenes",
+    "color": "bg-green-500",
+    "visible": true,
+    "type": "work"
+  },
+  {
+    "id": "limpieza",
+    "name": "Limpieza Dental",
+    "color": "bg-pink-500",
+    "visible": true,
+    "type": "shared"
+  }
+]
