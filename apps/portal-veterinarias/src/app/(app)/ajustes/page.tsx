@@ -8,6 +8,7 @@ export default async function AjustesPage() {
     <AjustesClient
       clinicName={session?.clinic?.name ?? ""}
       clinicAddress={session?.clinic?.address ?? ""}
+      clinicPhone={session?.clinic?.phone ?? ""}
       clinicEmail={session?.clinic?.email ?? ""}
       clinicSlug={session?.clinic?.slug ?? ""}
       userEmail={session?.user?.email ?? ""}

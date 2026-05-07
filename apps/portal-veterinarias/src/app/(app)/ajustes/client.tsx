@@ -195,11 +195,12 @@ function TabCuenta({ userEmail }: { userEmail: string }) {
 interface TabPerfilProps {
   clinicName: string
   clinicAddress: string
+  clinicPhone: string
   clinicEmail: string
   clinicSlug: string
 }
 
-function TabPerfil({ clinicName, clinicAddress, clinicEmail, clinicSlug }: TabPerfilProps) {
+function TabPerfil({ clinicName, clinicAddress, clinicPhone, clinicEmail, clinicSlug }: TabPerfilProps) {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [profileImage, setProfileImage] = useState<string | null>(null)
   const accordionRefs = useRef<Record<string, HTMLDivElement | null>>({})
@@ -251,8 +252,17 @@ function TabPerfil({ clinicName, clinicAddress, clinicEmail, clinicSlug }: TabPe
 
   const form = useForm<z.infer<typeof profileSchema>>({
     resolver: zodResolver(profileSchema),
-    defaultValues: { firstName: "", lastName: "", email: clinicEmail, phone: "", website: "", location: clinicAddress, role: "", bio: "", company: clinicSlug, timezone: "", language: "" },
+    defaultValues: { firstName: "", lastName: "", email: clinicEmail, phone: clinicPhone, website: "", location: clinicAddress, role: "", bio: "", company: clinicSlug, timezone: "", language: "" },
   })
+
+  useEffect(() => {
+    form.reset({
+      ...form.getValues(),
+      phone:    clinicPhone,
+      location: clinicAddress,
+      company:  clinicSlug,
+    })
+  }, [clinicPhone, clinicAddress, clinicSlug])
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -825,12 +835,13 @@ function TabNotificaciones() {
 interface AjustesClientProps {
   clinicName: string
   clinicAddress: string
+  clinicPhone: string
   clinicEmail: string
   clinicSlug: string
   userEmail: string
 }
 
-export function AjustesClient({ clinicName, clinicAddress, clinicEmail, clinicSlug, userEmail }: AjustesClientProps) {
+export function AjustesClient({ clinicName, clinicAddress, clinicPhone, clinicEmail, clinicSlug, userEmail }: AjustesClientProps) {
   const [active, setActive] = useState("cuenta")
 
   return (
@@ -866,7 +877,7 @@ export function AjustesClient({ clinicName, clinicAddress, clinicEmail, clinicSl
           {/* Content */}
           <div className="min-w-0 flex-1">
             {active === "cuenta"         && <TabCuenta userEmail={userEmail} />}
-            {active === "perfil"         && <TabPerfil clinicName={clinicName} clinicAddress={clinicAddress} clinicEmail={clinicEmail} clinicSlug={clinicSlug} />}
+            {active === "perfil"         && <TabPerfil clinicName={clinicName} clinicAddress={clinicAddress} clinicPhone={clinicPhone} clinicEmail={clinicEmail} clinicSlug={clinicSlug} />}
             {active === "apariencia"     && <TabApariencia />}
             {active === "notificaciones" && <TabNotificaciones />}
           </div>
