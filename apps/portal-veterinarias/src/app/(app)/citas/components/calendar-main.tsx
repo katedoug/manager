@@ -181,48 +181,33 @@ export function CalendarMain({
       .sort((a, b) => a.date.getTime() - b.date.getTime())
 
     return (
-      <div className="flex-1 p-6">
-        <div className="space-y-4">
+      <div className="flex-1 p-4">
+        <div className="space-y-3">
           {upcoming.map(event => (
             <Card
               key={event.id}
               className="cursor-pointer hover:shadow-md transition-shadow"
               onClick={() => handleEventClick(event)}
             >
-              <CardContent className="px-4">
-                <div className="flex items-start justify-between">
-                  <div className="flex items-start gap-3">
-                    <div className={cn("w-3 h-3 rounded-full mt-1.5", event.color)} />
-                    <div className="flex-1">
-                      <h3 className="font-medium">{event.title}</h3>
-                      <div className="flex items-center gap-4 mt-2 text-sm text-muted-foreground">
-                        <div className="flex items-center gap-1">
-                          <CalendarIcon className="w-4 h-4" />
-                          {format(event.date, "d MMM yyyy", { locale: es })}
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <Clock className="w-4 h-4" />
-                          {event.time}
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <MapPin className="w-4 h-4" />
-                          {event.location}
-                        </div>
+              <CardContent className="px-4 py-3">
+                <div className="flex items-start gap-3">
+                  <div className={cn("w-2.5 h-2.5 rounded-full mt-1.5 shrink-0", event.color)} />
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-medium truncate">{event.title}</h3>
+                    <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1.5 text-xs text-muted-foreground">
+                      <div className="flex items-center gap-1">
+                        <CalendarIcon className="w-3 h-3 shrink-0" />
+                        {format(event.date, "d MMM yyyy", { locale: es })}
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Clock className="w-3 h-3 shrink-0" />
+                        {event.time}
                       </div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <div className="flex -space-x-2">
-                      {event.attendees.slice(0, 3).map((attendee, index) => (
-                        <Avatar key={index} className="border-2 border-background">
-                          <AvatarFallback className="text-xs">{attendee.slice(0, 2)}</AvatarFallback>
-                        </Avatar>
-                      ))}
-                    </div>
-                    <Button variant="ghost" size="sm" className="cursor-pointer">
-                      <MoreHorizontal className="w-4 h-4" />
-                    </Button>
-                  </div>
+                  <Button variant="ghost" size="sm" className="cursor-pointer shrink-0 -mr-2" onClick={e => { e.stopPropagation(); handleEventClick(event) }}>
+                    <MoreHorizontal className="w-4 h-4" />
+                  </Button>
                 </div>
               </CardContent>
             </Card>
