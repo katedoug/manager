@@ -274,55 +274,6 @@ function TabPerfil({ clinicName, clinicAddress, clinicEmail, clinicSlug }: TabPe
     <Form {...form}>
       <form onSubmit={form.handleSubmit(() => {})} className="space-y-6">
 
-        {/* Acceso al portal de citas */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Acceso al portal de citas</CardTitle>
-            <CardDescription>
-              Credenciales con las que se accede a <strong>vet.katedoug.com</strong>
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            {"success" in (citasState ?? {}) ? (
-              <div className="rounded-lg bg-emerald-50 border border-emerald-200 px-4 py-3 text-sm text-emerald-800 dark:bg-emerald-950/30 dark:border-emerald-800/40 dark:text-emerald-300">
-                Acceso configurado correctamente para <strong>{(citasState as { success: true; email: string }).email}</strong>
-              </div>
-            ) : (
-              <form onSubmit={handleCitasSubmit} className="space-y-4">
-                {"error" in (citasState ?? {}) && (
-                  <div className="rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-800 dark:bg-red-950/30 dark:border-red-800/40 dark:text-red-300">
-                    {(citasState as { error: string }).error}
-                  </div>
-                )}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="space-y-1.5">
-                    <label className="text-sm font-medium">Correo electrónico</label>
-                    <Input
-                      name="citasEmail"
-                      type="email"
-                      placeholder="citas@tuclinica.com"
-                      required
-                    />
-                  </div>
-                  <div className="space-y-1.5">
-                    <label className="text-sm font-medium">Contraseña</label>
-                    <Input
-                      name="citasPassword"
-                      type="password"
-                      placeholder="Mínimo 6 caracteres"
-                      required
-                      minLength={6}
-                    />
-                  </div>
-                </div>
-                <Button type="submit" disabled={isPending}>
-                  {isPending ? "Configurando…" : "Configurar acceso"}
-                </Button>
-              </form>
-            )}
-          </CardContent>
-        </Card>
-
         {/* Sucursales con configuración expandible */}
         <Card>
           <CardHeader>
@@ -402,6 +353,44 @@ function TabPerfil({ clinicName, clinicAddress, clinicEmail, clinicSlug }: TabPe
                     <FormField control={form.control} name="bio" render={({ field }) => (
                       <FormItem><FormLabel>Biografía</FormLabel><FormControl><Textarea placeholder="Cuéntanos un poco sobre tu clínica…" className="min-h-[100px]" {...field} /></FormControl><FormMessage /></FormItem>
                     )} />
+
+                    <Separator />
+
+                    {/* Acceso al portal de citas */}
+                    <div className="space-y-4">
+                      <div>
+                        <p className="text-sm font-semibold">Acceso al portal de citas</p>
+                        <p className="text-xs text-muted-foreground">
+                          Credenciales con las que se accede a vet.katedoug.com para esta sucursal
+                        </p>
+                      </div>
+                      {"success" in (citasState ?? {}) ? (
+                        <div className="rounded-lg bg-emerald-50 border border-emerald-200 px-4 py-3 text-sm text-emerald-800 dark:bg-emerald-950/30 dark:border-emerald-800/40 dark:text-emerald-300">
+                          Acceso configurado para <strong>{(citasState as { success: true; email: string }).email}</strong>
+                        </div>
+                      ) : (
+                        <form onSubmit={handleCitasSubmit} className="space-y-4">
+                          {"error" in (citasState ?? {}) && (
+                            <div className="rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-800 dark:bg-red-950/30 dark:border-red-800/40 dark:text-red-300">
+                              {(citasState as { error: string }).error}
+                            </div>
+                          )}
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="space-y-1.5">
+                              <label className="text-sm font-medium">Correo electrónico</label>
+                              <Input name="citasEmail" type="email" placeholder="citas@tuclinica.com" required />
+                            </div>
+                            <div className="space-y-1.5">
+                              <label className="text-sm font-medium">Contraseña</label>
+                              <Input name="citasPassword" type="password" placeholder="Mínimo 6 caracteres" required minLength={6} />
+                            </div>
+                          </div>
+                          <Button type="submit" size="sm" disabled={isPending}>
+                            {isPending ? "Configurando…" : "Configurar acceso"}
+                          </Button>
+                        </form>
+                      )}
+                    </div>
 
                     <Separator />
 
