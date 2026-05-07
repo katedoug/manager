@@ -54,14 +54,14 @@ const navSecondary = [
   { title: "Comentarios", url: "#", icon: Send     },
 ]
 
-const user = {
-  name: "Veterinaria San Nicolás",
-  email: "contacto@sannicolas.vet",
-  avatar: "",
+interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
+  clinicName: string
+  userEmail: string
 }
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar({ clinicName, userEmail, ...props }: AppSidebarProps) {
   const { isDemoMode, toggleDemoMode } = useDemoMode()
+  const user = { name: clinicName, email: userEmail, avatar: "" }
 
   return (
     <Sidebar variant="inset" {...props}>

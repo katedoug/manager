@@ -2,12 +2,18 @@ import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/app-sidebar"
 import { DemoModeProvider } from "@/context/demo-mode"
 import { DemoLoader } from "@/components/demo-loader"
+import { getSessionAndClinic } from "@/lib/supabase/queries"
 
-export default function AppLayout({ children }: { children: React.ReactNode }) {
+export default async function AppLayout({ children }: { children: React.ReactNode }) {
+  const session = await getSessionAndClinic()
+
   return (
     <DemoModeProvider>
       <SidebarProvider>
-        <AppSidebar />
+        <AppSidebar
+          clinicName={session?.clinic?.name ?? "Mi Clínica"}
+          userEmail={session?.user?.email ?? ""}
+        />
         <SidebarInset>{children}</SidebarInset>
       </SidebarProvider>
       <DemoLoader />

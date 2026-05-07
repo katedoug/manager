@@ -3,24 +3,20 @@ import { TopBar } from "@/components/top-bar"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
-import React from "react"
-import { BadgeCheck, Clock } from "lucide-react"
+import { BadgeCheck } from "lucide-react"
+import { format } from "date-fns"
+import { es } from "date-fns/locale"
+import { getSessionAndClinic } from "@/lib/supabase/queries"
 
-const user = {
-  name: "Veterinaria San Nicolás",
-  email: "contacto@sannicolas.vet",
-  phone: "+52 55 1234 5678",
-  location: "Ciudad de México, CDMX",
-  specialty: "Medicina General Veterinaria",
-  license: "CDMX-VET-20481",
-  joined: "Enero 2022",
-  verified: true,
-  rating: 4.8,
-  reviews: 132,
-  consultations: 1240,
-}
+export default async function PerfilPage() {
+  const session = await getSessionAndClinic()
+  const clinic  = session?.clinic
+  const email   = session?.user?.email ?? "—"
 
-export default function PerfilPage() {
+  const joined = clinic?.created_at
+    ? format(new Date(clinic.created_at), "MMMM yyyy", { locale: es })
+    : "—"
+
   return (
     <>
       <HideLoader />
@@ -35,53 +31,45 @@ export default function PerfilPage() {
           }}
         >
           <div className="flex flex-col gap-5">
-            {/* Label */}
             <p className="text-xs font-semibold uppercase tracking-widest text-[#8B9FE8]">
-              Perfil de clínica · MVZ Rafael Martínez
+              Perfil de clínica · {email}
             </p>
 
-            {/* Title */}
             <div>
               <h1 className="text-3xl font-bold leading-tight text-white sm:text-4xl">
-                {user.name}
-                {user.verified ? (
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <BadgeCheck className="inline-block align-middle ml-2 size-7 cursor-default fill-blue-500 text-white shrink-0" />
-                    </TooltipTrigger>
-                    <TooltipContent side="right">Clínica Verificada</TooltipContent>
-                  </Tooltip>
-                ) : (
-                  <Clock className="inline-block align-middle ml-2 size-5 text-amber-300 shrink-0" />
-                )}
+                {clinic?.name ?? "Mi Clínica"}
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <BadgeCheck className="inline-block align-middle ml-2 size-7 cursor-default fill-blue-500 text-white shrink-0" />
+                  </TooltipTrigger>
+                  <TooltipContent side="right">Clínica Verificada</TooltipContent>
+                </Tooltip>
               </h1>
               <p className="mt-2 text-base text-white/60">
-                {user.specialty} · {user.location}
+                {clinic?.address ?? "—"}
               </p>
             </div>
-
-
           </div>
         </div>
 
-        {/* Stats */}
+        {/* Stats — placeholders hasta tener datos reales */}
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           <Card>
             <CardContent className="flex flex-col items-start justify-center gap-1.5 px-6 py-4">
               <span className="text-base text-muted-foreground">Consultas mes</span>
-              <span className="text-5xl font-bold tabular-nums">{user.consultations.toLocaleString("es-MX")}</span>
+              <span className="text-5xl font-bold tabular-nums">—</span>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="flex flex-col items-start justify-center gap-1.5 px-6 py-4">
               <span className="text-base text-muted-foreground">Calificación promedio</span>
-              <span className="text-5xl font-bold tabular-nums">{user.rating}</span>
+              <span className="text-5xl font-bold tabular-nums">—</span>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="flex flex-col items-start justify-center gap-1.5 px-6 py-4">
               <span className="text-base text-muted-foreground">Reseñas de clientes</span>
-              <span className="text-5xl font-bold tabular-nums">{user.reviews}</span>
+              <span className="text-5xl font-bold tabular-nums">—</span>
             </CardContent>
           </Card>
         </div>
@@ -89,21 +77,18 @@ export default function PerfilPage() {
         {/* Info detail */}
         <Card>
           <CardHeader>
-            <CardTitle>Información del MVZ Responsable</CardTitle>
+            <CardTitle>Información de la Clínica</CardTitle>
           </CardHeader>
           <Separator />
           <dl>
-            <DescriptionRow label="Clínica" value={user.name} />
-            <DescriptionRow label="Especialidad" value={user.specialty} />
-            <DescriptionRow label="Cédula profesional" value={user.license} />
-            <DescriptionRow label="Correo electrónico" value={user.email} />
-            <DescriptionRow label="Teléfono" value={user.phone} />
-            <DescriptionRow label="Ubicación" value={user.location} />
-            <DescriptionRow label="Miembro desde" value={user.joined} last />
+            <DescriptionRow label="Nombre"              value={clinic?.name    ?? "—"} />
+            <DescriptionRow label="Correo electrónico"  value={email} />
+            <DescriptionRow label="Teléfono"            value={clinic?.phone   ?? "—"} />
+            <DescriptionRow label="Dirección"           value={clinic?.address ?? "—"} />
+            <DescriptionRow label="Miembro desde"       value={joined} last />
           </dl>
         </Card>
 
-        {/* Disclaimer */}
         <p className="text-center text-xs text-muted-foreground pb-2">
           Si necesitas realizar algún cambio en la información de tu perfil, ponte en contacto con nuestro equipo de Partners en{" "}
           <a href="mailto:partners@katedoug.com" className="font-medium text-primary underline underline-offset-2 hover:opacity-80">
@@ -117,15 +102,7 @@ export default function PerfilPage() {
   )
 }
 
-function DescriptionRow({
-  label,
-  value,
-  last = false,
-}: {
-  label: string
-  value: string
-  last?: boolean
-}) {
+function DescriptionRow({ label, value, last = false }: { label: string; value: string; last?: boolean }) {
   return (
     <div className={`grid grid-cols-3 gap-4 px-6 py-3.5 ${!last ? "border-b" : ""}`}>
       <dt className="text-sm text-muted-foreground">{label}</dt>
