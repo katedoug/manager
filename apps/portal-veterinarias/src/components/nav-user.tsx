@@ -25,7 +25,6 @@ import {
   BadgeCheckIcon,
   ChevronsUpDownIcon,
   LogOutIcon,
-  Settings2Icon,
 } from "lucide-react"
 
 import Link from "next/link"
@@ -109,10 +108,6 @@ export function NavUser({
                   <BadgeCheckIcon />
                   Mi perfil
                 </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Settings2Icon />
-                Ajustes
               </DropdownMenuItem>
             </DropdownMenuGroup>
 
