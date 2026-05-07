@@ -47,19 +47,26 @@ export async function createSucursal(
   if (updateError) return { error: updateError.message }
 
   if (citasEmail && citasPassword) {
-    const admin = createAdminClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    )
-    const { error: createError } = await admin.auth.admin.createUser({
-      email: citasEmail,
-      password: citasPassword,
-      email_confirm: true,
-    })
-    if (createError && !createError.message.toLowerCase().includes("already been registered")) {
-      return { error: createError.message }
+    if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
+      return { error: "SUPABASE_SERVICE_ROLE_KEY no configurada en el servidor" }
     }
-    await supabase.from("clinics").update({ email: citasEmail }).eq("id", clinicUser.clinic_id)
+    try {
+      const admin = createAdminClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.SUPABASE_SERVICE_ROLE_KEY,
+      )
+      const { error: createError } = await admin.auth.admin.createUser({
+        email: citasEmail,
+        password: citasPassword,
+        email_confirm: true,
+      })
+      if (createError && !createError.message.toLowerCase().includes("already been registered")) {
+        return { error: createError.message }
+      }
+      await supabase.from("clinics").update({ email: citasEmail }).eq("id", clinicUser.clinic_id)
+    } catch (e) {
+      return { error: `Error al crear usuario de citas: ${e instanceof Error ? e.message : String(e)}` }
+    }
   }
 
   return { success: true }
