@@ -35,8 +35,10 @@ import { Slider } from "@/components/ui/slider"
 import { cn } from "@/lib/utils"
 import { useRef } from "react"
 import { useDemoMode } from "@/context/demo-mode"
-import { useActionState, useTransition } from "react"
+import { useActionState, useTransition, useEffect } from "react"
+import { useRouter } from "next/navigation"
 import { setCitasAccess, type CitasAccessState } from "@/app/actions/citas-access"
+import { createSucursal, type CreateSucursalState } from "@/app/actions/sucursal"
 
 // ── Schemas ──────────────────────────────────────────────────────────────────
 
@@ -261,8 +263,19 @@ function TabPerfil({ clinicName, clinicAddress, clinicEmail, clinicSlug }: TabPe
     }
   }
 
+  const router = useRouter()
   const [citasState, citasAction] = useActionState<CitasAccessState, FormData>(setCitasAccess, null)
   const [isPending, startTransition] = useTransition()
+
+  const [sucursalState, sucursalAction] = useActionState<CreateSucursalState, FormData>(createSucursal, null)
+  const [sucursalPending, startSucursalTransition] = useTransition()
+
+  useEffect(() => {
+    if (sucursalState && "success" in sucursalState) {
+      setNuevaSucursalOpen(false)
+      router.refresh()
+    }
+  }, [sucursalState])
 
   function handleCitasSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -483,104 +496,79 @@ function TabPerfil({ clinicName, clinicAddress, clinicEmail, clinicSlug }: TabPe
         <Dialog open={nuevaSucursalOpen} onOpenChange={setNuevaSucursalOpen}>
           <DialogContent className="sm:max-w-4xl max-h-[90vh] overflow-y-auto">
             {/* Loader */}
-            {creandoSucursal ? (
-              <div className="flex flex-col items-center justify-center gap-4 py-20">
-                <div className="size-10 rounded-full border-4 border-muted border-t-primary animate-spin" />
-                <p className="text-base font-semibold">Preparando todo</p>
-                <p className="text-sm text-muted-foreground">Estamos configurando tu nueva sucursal…</p>
-              </div>
-            ) : (<>
-
             <DialogHeader>
               <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Mi clínica</p>
               <DialogTitle>Nueva sucursal</DialogTitle>
             </DialogHeader>
 
-            <div className="space-y-6 pt-2">
-              {/* Foto */}
-              <div className="flex items-center gap-4">
-                <Avatar className="h-16 w-16 rounded-lg">
-                  <AvatarFallback className="rounded-lg font-semibold">NS</AvatarFallback>
-                </Avatar>
-                <div className="flex flex-col gap-1.5">
-                  <Button variant="outline" size="sm" type="button" className="cursor-pointer w-fit">
-                    <Upload className="mr-2 h-4 w-4" />
-                    Subir foto
-                  </Button>
-                  <p className="text-xs text-muted-foreground">JPG, GIF o PNG. Máx 800K</p>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault()
+                const fd = new FormData(e.currentTarget)
+                startSucursalTransition(() => { sucursalAction(fd) })
+              }}
+              className="space-y-6 pt-2"
+            >
+              {sucursalState && "error" in sucursalState && (
+                <div className="rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-800">
+                  {sucursalState.error}
                 </div>
+              )}
+
+              <div className="space-y-1.5">
+                <label className="text-sm font-medium">Nombre de la sucursal <span className="text-destructive">*</span></label>
+                <Input name="nombre" placeholder="Ej. Veterinaria San Pedro" required />
               </div>
 
               <Separator />
 
-              {/* Responsable */}
               <div className="space-y-4">
-                <p className="text-sm font-semibold">Responsable de Sucursal</p>
+                <p className="text-sm font-semibold">Información de contacto</p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-1.5">
-                    <label className="text-sm font-medium">Nombre</label>
-                    <Input placeholder="Nombre" />
-                  </div>
-                  <div className="space-y-1.5">
-                    <label className="text-sm font-medium">Apellido</label>
-                    <Input placeholder="Apellido" />
-                  </div>
-                  <div className="space-y-1.5">
-                    <label className="text-sm font-medium">Correo Electrónico</label>
-                    <Input type="email" placeholder="tu@email.com" />
-                  </div>
-                  <div className="space-y-1.5">
-                    <label className="text-sm font-medium">Identificador de Sucursal</label>
-                    <Input placeholder="Ej. Sucursal Norte" />
-                    <p className="text-xs text-muted-foreground">Así es como los clientes reconocerán esta sucursal en su app</p>
+                    <label className="text-sm font-medium">Identificador de sucursal</label>
+                    <Input name="slug" placeholder="Ej. san-pedro" />
+                    <p className="text-xs text-muted-foreground">Así te reconocerán los clientes en su app</p>
                   </div>
                   <div className="space-y-1.5">
                     <label className="text-sm font-medium">Teléfono</label>
-                    <Input type="tel" placeholder="+52 (55) 1234-5678" />
+                    <Input name="phone" type="tel" placeholder="+52 (55) 1234-5678" />
                   </div>
-                  <div className="space-y-1.5">
+                  <div className="col-span-full space-y-1.5">
                     <label className="text-sm font-medium">Dirección</label>
-                    <Input placeholder="Av. Principal 123, Col. Centro" />
+                    <Input name="address" placeholder="Av. Principal 123, Col. Centro" />
                   </div>
                 </div>
-              </div>
-
-              {/* Biografía */}
-              <div className="space-y-1.5">
-                <label className="text-sm font-medium">Biografía</label>
-                <Textarea placeholder="Cuéntanos un poco sobre esta sucursal…" className="min-h-[80px]" />
               </div>
 
               <Separator />
 
-              {/* Servicios */}
-              <div className="space-y-3">
+              <div className="space-y-4">
                 <div>
-                  <p className="text-sm font-semibold">Servicios</p>
-                  <p className="text-xs text-muted-foreground">Activa los servicios disponibles para esta sucursal</p>
+                  <p className="text-sm font-semibold">Acceso al portal de citas</p>
+                  <p className="text-xs text-muted-foreground">Credenciales para acceder a vet.katedoug.com</p>
                 </div>
-                <div className="divide-y rounded-lg border">
-                  {servicios.map((s) => (
-                    <div key={s.id} className="flex items-center gap-4 px-4 py-3">
-                      <Switch className="cursor-pointer shrink-0" defaultChecked={s.enabled} />
-                      <span className="text-sm flex-1">{s.label}</span>
-                      <span className="w-14 text-xs text-muted-foreground text-right shrink-0">{s.duration} min</span>
-                    </div>
-                  ))}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="space-y-1.5">
+                    <label className="text-sm font-medium">Correo electrónico</label>
+                    <Input name="citasEmail" type="email" placeholder="citas@tuclinica.com" />
+                  </div>
+                  <div className="space-y-1.5">
+                    <label className="text-sm font-medium">Contraseña</label>
+                    <Input name="citasPassword" type="password" placeholder="Mínimo 6 caracteres" minLength={6} />
+                  </div>
                 </div>
               </div>
 
-              {/* Acciones */}
               <div className="flex gap-2 pt-2">
-                <Button type="button" className="flex-1" onClick={handleCrearSucursal} disabled={creandoSucursal}>
-                  Crear sucursal
+                <Button type="submit" className="flex-1" disabled={sucursalPending}>
+                  {sucursalPending ? "Guardando…" : "Crear sucursal"}
                 </Button>
                 <Button type="button" variant="outline" className="flex-1 cursor-pointer" onClick={() => setNuevaSucursalOpen(false)}>
                   Cancelar
                 </Button>
               </div>
-            </div>
-            </>)}
+            </form>
           </DialogContent>
         </Dialog>
 
