@@ -282,6 +282,7 @@ function TabPerfil({ clinicName, clinicAddress, clinicEmail, clinicSlug }: TabPe
           </CardHeader>
           <CardContent className="space-y-3 pb-4">
             <Accordion type="single" collapsible className="space-y-2" onValueChange={handleAccordionChange}>
+              {clinicName && (
               <AccordionItem value="clinica-principal" ref={(el) => { accordionRefs.current["clinica-principal"] = el }} className="rounded-lg border px-4 data-[state=open]:border-primary/40">
                 <AccordionTrigger className="hover:no-underline py-4 cursor-pointer">
                   <div className="flex items-center gap-3 text-left">
@@ -463,6 +464,7 @@ function TabPerfil({ clinicName, clinicAddress, clinicEmail, clinicSlug }: TabPe
 
                 </AccordionContent>
               </AccordionItem>
+              )}
             </Accordion>
 
             {/* Crear nueva */}
