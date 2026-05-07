@@ -301,7 +301,6 @@ function TabPerfil({ clinicName, clinicAddress, clinicEmail, clinicSlug }: TabPe
                       name="citasEmail"
                       type="email"
                       placeholder="citas@tuclinica.com"
-                      defaultValue={clinicEmail}
                       required
                     />
                   </div>
