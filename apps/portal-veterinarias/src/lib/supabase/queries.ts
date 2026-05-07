@@ -17,7 +17,7 @@ export async function getSessionAndClinic() {
 
   return {
     user,
-    clinic: data.clinic as {
+    clinic: data.clinic as unknown as {
       id: string
       name: string
       slug: string | null
