@@ -50,14 +50,14 @@ export function SalesChart() {
 
   return (
     <Card>
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+      <CardHeader className="flex flex-col gap-3 pb-2 sm:flex-row sm:items-center sm:justify-between sm:gap-0 sm:space-y-0">
         <div>
           <CardTitle>Rendimiento de Ingresos</CardTitle>
           <CardDescription>Ingresos mensuales vs meta</CardDescription>
         </div>
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center gap-2">
           <Select value={timeRange} onValueChange={setTimeRange}>
-            <SelectTrigger className="w-32">
+            <SelectTrigger className="flex-1 sm:w-36 sm:flex-none">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -66,12 +66,12 @@ export function SalesChart() {
               <SelectItem value="12m">Últimos 12 meses</SelectItem>
             </SelectContent>
           </Select>
-          <Button variant="outline">Exportar</Button>
+          <Button variant="outline" className="shrink-0">Exportar</Button>
         </div>
       </CardHeader>
-      <CardContent className="p-0 pt-6">
-        <div className="px-6 pb-6">
-          <ChartContainer config={chartConfig} className="h-[350px] w-full">
+      <CardContent className="p-0 pt-4">
+        <div className="px-4 pb-4">
+          <ChartContainer config={chartConfig} className="h-[260px] w-full sm:h-[350px]">
             <AreaChart data={data} margin={{ top: 10, right: 10, left: 10, bottom: 0 }}>
               <defs>
                 <linearGradient id="colorIngresos" x1="0" y1="0" x2="0" y2="1">
