@@ -1,6 +1,5 @@
 "use server"
 
-import { revalidatePath } from "next/cache"
 import { createClient } from "@/lib/supabase/server"
 import { createClient as createAdminClient } from "@supabase/supabase-js"
 
@@ -63,6 +62,5 @@ export async function createSucursal(
     await supabase.from("clinics").update({ email: citasEmail }).eq("id", clinicUser.clinic_id)
   }
 
-  revalidatePath("/ajustes")
   return { success: true }
 }

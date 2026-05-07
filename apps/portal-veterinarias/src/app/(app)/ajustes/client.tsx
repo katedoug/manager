@@ -283,7 +283,7 @@ function TabPerfil({ clinicName, clinicAddress, clinicPhone, clinicEmail, clinic
   useEffect(() => {
     if (sucursalState && "success" in sucursalState) {
       setNuevaSucursalOpen(false)
-      router.refresh()
+      setTimeout(() => router.refresh(), 300)
     }
   }, [sucursalState])
 
@@ -347,16 +347,10 @@ function TabPerfil({ clinicName, clinicAddress, clinicPhone, clinicEmail, clinic
 
                     <Separator />
 
-                    {/* Responsable de Sucursal */}
+                    {/* Información de la sucursal */}
                     <div className="space-y-4">
-                      <p className="text-sm font-semibold">Responsable de Sucursal</p>
+                      <p className="text-sm font-semibold">Información de la sucursal</p>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <FormField control={form.control} name="firstName" render={({ field }) => (
-                          <FormItem><FormLabel>Nombre</FormLabel><FormControl><Input placeholder="Tu nombre" {...field} /></FormControl><FormMessage /></FormItem>
-                        )} />
-                        <FormField control={form.control} name="lastName" render={({ field }) => (
-                          <FormItem><FormLabel>Apellido</FormLabel><FormControl><Input placeholder="Tu apellido" {...field} /></FormControl><FormMessage /></FormItem>
-                        )} />
                         <FormField control={form.control} name="company" render={({ field }) => (
                           <FormItem>
                             <FormLabel>Identificador de Sucursal</FormLabel>
@@ -388,32 +382,39 @@ function TabPerfil({ clinicName, clinicAddress, clinicPhone, clinicEmail, clinic
                           Credenciales con las que se accede a vet.katedoug.com para esta sucursal
                         </p>
                       </div>
-                      {"success" in (citasState ?? {}) ? (
-                        <div className="rounded-lg bg-emerald-50 border border-emerald-200 px-4 py-3 text-sm text-emerald-800 dark:bg-emerald-950/30 dark:border-emerald-800/40 dark:text-emerald-300">
-                          Acceso configurado para <strong>{(citasState as { success: true; email: string }).email}</strong>
-                        </div>
-                      ) : (
-                        <form onSubmit={handleCitasSubmit} className="space-y-4">
-                          {"error" in (citasState ?? {}) && (
-                            <div className="rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-800 dark:bg-red-950/30 dark:border-red-800/40 dark:text-red-300">
-                              {(citasState as { error: string }).error}
+                      {(() => {
+                        const successEmail = citasState && "success" in citasState ? (citasState as { success: true; email: string }).email : null
+                        const configuredEmail = successEmail ?? clinicEmail
+                        if (configuredEmail) {
+                          return (
+                            <div className="rounded-lg bg-emerald-50 border border-emerald-200 px-4 py-3 text-sm text-emerald-800 dark:bg-emerald-950/30 dark:border-emerald-800/40 dark:text-emerald-300">
+                              Acceso configurado para <strong>{configuredEmail}</strong>
                             </div>
-                          )}
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div className="space-y-1.5">
-                              <label className="text-sm font-medium">Correo electrónico</label>
-                              <Input name="citasEmail" type="email" placeholder="citas@tuclinica.com" required />
+                          )
+                        }
+                        return (
+                          <form onSubmit={handleCitasSubmit} className="space-y-4">
+                            {"error" in (citasState ?? {}) && (
+                              <div className="rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-800 dark:bg-red-950/30 dark:border-red-800/40 dark:text-red-300">
+                                {(citasState as { error: string }).error}
+                              </div>
+                            )}
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                              <div className="space-y-1.5">
+                                <label className="text-sm font-medium">Correo electrónico</label>
+                                <Input name="citasEmail" type="email" placeholder="citas@tuclinica.com" required />
+                              </div>
+                              <div className="space-y-1.5">
+                                <label className="text-sm font-medium">Contraseña</label>
+                                <Input name="citasPassword" type="password" placeholder="Mínimo 6 caracteres" required minLength={6} />
+                              </div>
                             </div>
-                            <div className="space-y-1.5">
-                              <label className="text-sm font-medium">Contraseña</label>
-                              <Input name="citasPassword" type="password" placeholder="Mínimo 6 caracteres" required minLength={6} />
-                            </div>
-                          </div>
-                          <Button type="submit" size="sm" disabled={isPending}>
-                            {isPending ? "Configurando…" : "Configurar acceso"}
-                          </Button>
-                        </form>
-                      )}
+                            <Button type="submit" size="sm" disabled={isPending}>
+                              {isPending ? "Configurando…" : "Configurar acceso"}
+                            </Button>
+                          </form>
+                        )
+                      })()}
                     </div>
 
                     <Separator />
