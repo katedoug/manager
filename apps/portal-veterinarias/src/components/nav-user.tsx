@@ -1,6 +1,5 @@
 "use client"
 
-import { useRouter } from "next/navigation"
 import {
   Avatar,
   AvatarFallback,
@@ -37,7 +36,6 @@ export function NavUser({
   user: { name: string; email: string; avatar: string }
 }) {
   const { isMobile } = useSidebar()
-  const router = useRouter()
   const { show } = useLoader()
 
   const initials = user.name
@@ -49,11 +47,7 @@ export function NavUser({
 
   function handleLogout() {
     show("Cerrando sesión…")
-    setTimeout(async () => {
-      await logout()
-      router.push("/")
-      router.refresh()
-    }, 3000)
+    setTimeout(() => logout(), 1500)
   }
 
   return (

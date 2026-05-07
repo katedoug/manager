@@ -60,7 +60,7 @@ export function LoginForm({
             id="email"
             name="email"
             type="email"
-            placeholder="demo@demo.com"
+            placeholder="correo@ejemplo.com"
             required
             autoComplete="email"
             className="bg-background"
