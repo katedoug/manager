@@ -9,13 +9,13 @@ type DemoModeContextType = {
 }
 
 const DemoModeContext = createContext<DemoModeContextType>({
-  isDemoMode: true,
+  isDemoMode: false,
   isLoading: false,
   toggleDemoMode: () => {},
 })
 
 export function DemoModeProvider({ children }: { children: React.ReactNode }) {
-  const [isDemoMode, setIsDemoMode] = useState(true)
+  const [isDemoMode, setIsDemoMode] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
