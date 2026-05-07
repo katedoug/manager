@@ -91,10 +91,10 @@ const NAV = [
 
 // ── Tab: Cuenta ───────────────────────────────────────────────────────────────
 
-function TabCuenta() {
+function TabCuenta({ userEmail }: { userEmail: string }) {
   const form = useForm<z.infer<typeof accountSchema>>({
     resolver: zodResolver(accountSchema),
-    defaultValues: { firstName: "Rafael", lastName: "Martínez", email: "demo@katedoug.com", username: "VET-4K9X2M", currentPassword: "", newPassword: "", confirmPassword: "" },
+    defaultValues: { firstName: "", lastName: "", email: userEmail, username: "", currentPassword: "", newPassword: "", confirmPassword: "" },
   })
 
   return (
@@ -794,7 +794,7 @@ interface AjustesClientProps {
   userEmail: string
 }
 
-export function AjustesClient({ clinicName, clinicAddress, clinicEmail, clinicSlug }: AjustesClientProps) {
+export function AjustesClient({ clinicName, clinicAddress, clinicEmail, clinicSlug, userEmail }: AjustesClientProps) {
   const [active, setActive] = useState("cuenta")
 
   return (
@@ -829,7 +829,7 @@ export function AjustesClient({ clinicName, clinicAddress, clinicEmail, clinicSl
 
           {/* Content */}
           <div className="min-w-0 flex-1">
-            {active === "cuenta"         && <TabCuenta />}
+            {active === "cuenta"         && <TabCuenta userEmail={userEmail} />}
             {active === "perfil"         && <TabPerfil clinicName={clinicName} clinicAddress={clinicAddress} clinicEmail={clinicEmail} clinicSlug={clinicSlug} />}
             {active === "apariencia"     && <TabApariencia />}
             {active === "notificaciones" && <TabNotificaciones />}
