@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache"
 import { createClient } from "@/lib/supabase/server"
-import { createClient as createBareClient } from "@supabase/supabase-js"
+import { createClient as createAdminClient } from "@supabase/supabase-js"
 
 export type CreateSucursalState =
   | null
@@ -13,12 +13,12 @@ export async function createSucursal(
   _: CreateSucursalState,
   formData: FormData,
 ): Promise<CreateSucursalState> {
-  const name         = (formData.get("nombre")        as string)?.trim()
-  const slug         = (formData.get("slug")          as string)?.trim()
-  const phone        = (formData.get("phone")         as string)?.trim()
-  const address      = (formData.get("address")       as string)?.trim()
-  const citasEmail   = (formData.get("citasEmail")    as string)?.trim()
-  const citasPassword = formData.get("citasPassword") as string
+  const name          = (formData.get("nombre")        as string)?.trim()
+  const slug          = (formData.get("slug")          as string)?.trim()
+  const phone         = (formData.get("phone")         as string)?.trim()
+  const address       = (formData.get("address")       as string)?.trim()
+  const citasEmail    = (formData.get("citasEmail")    as string)?.trim()
+  const citasPassword = formData.get("citasPassword")  as string
 
   if (!name) return { error: "El nombre de la sucursal es requerido" }
 
@@ -48,13 +48,17 @@ export async function createSucursal(
   if (updateError) return { error: updateError.message }
 
   if (citasEmail && citasPassword) {
-    const bare = createBareClient(
+    const admin = createAdminClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!,
     )
-    const { error: signUpError } = await bare.auth.signUp({ email: citasEmail, password: citasPassword })
-    if (signUpError && !signUpError.message.toLowerCase().includes("already registered")) {
-      return { error: signUpError.message }
+    const { error: createError } = await admin.auth.admin.createUser({
+      email: citasEmail,
+      password: citasPassword,
+      email_confirm: true,
+    })
+    if (createError && !createError.message.toLowerCase().includes("already been registered")) {
+      return { error: createError.message }
     }
     await supabase.from("clinics").update({ email: citasEmail }).eq("id", clinicUser.clinic_id)
   }
