@@ -42,21 +42,19 @@ export default function PerfilPage() {
 
             {/* Title */}
             <div>
-              <div className="flex flex-wrap items-center gap-3">
-                <h1 className="text-3xl font-bold leading-tight text-white sm:text-4xl">
-                  {user.name}
-                </h1>
+              <h1 className="text-3xl font-bold leading-tight text-white sm:text-4xl">
+                {user.name}
                 {user.verified ? (
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <BadgeCheck className="size-7 cursor-default fill-blue-500 text-white" />
+                      <BadgeCheck className="inline-block align-middle ml-2 size-7 cursor-default fill-blue-500 text-white shrink-0" />
                     </TooltipTrigger>
                     <TooltipContent side="right">Clínica Verificada</TooltipContent>
                   </Tooltip>
                 ) : (
-                  <Clock className="size-5 text-amber-300" />
+                  <Clock className="inline-block align-middle ml-2 size-5 text-amber-300 shrink-0" />
                 )}
-              </div>
+              </h1>
               <p className="mt-2 text-base text-white/60">
                 {user.specialty} · {user.location}
               </p>
