@@ -70,9 +70,9 @@ export function SalesChart() {
         </div>
       </CardHeader>
       <CardContent className="p-0 pt-4">
-        <div className="px-4 pb-4">
+        <div className="overflow-hidden px-2 pb-4 sm:px-4">
           <ChartContainer config={chartConfig} className="h-[260px] w-full sm:h-[350px]">
-            <AreaChart data={data} margin={{ top: 10, right: 10, left: 10, bottom: 0 }}>
+            <AreaChart data={data} margin={{ top: 10, right: 8, left: 0, bottom: 0 }}>
               <defs>
                 <linearGradient id="colorIngresos" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="5%" stopColor="var(--color-ingresos)" stopOpacity={0.4} />
@@ -93,8 +93,9 @@ export function SalesChart() {
               <YAxis
                 axisLine={false}
                 tickLine={false}
-                tick={{ fontSize: 12 }}
+                tick={{ fontSize: 11 }}
                 tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`}
+                width={38}
               />
               <ChartTooltip content={<ChartTooltipContent />} />
               <Area
