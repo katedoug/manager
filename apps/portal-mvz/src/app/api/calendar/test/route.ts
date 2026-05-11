@@ -1,22 +1,17 @@
 import { NextResponse } from "next/server"
+import { getCalendarClientWithRefreshToken, CALENDAR_ID } from "@/lib/google-calendar"
+import { getGoogleRefreshToken } from "@/lib/calendar-auth"
+
+export const dynamic = "force-dynamic"
 
 export async function GET() {
-  const clientId      = process.env.GOOGLE_CLIENT_ID
-  const clientSecret  = process.env.GOOGLE_CLIENT_SECRET
-  const refreshToken  = process.env.GOOGLE_REFRESH_TOKEN
-  const calendarId    = process.env.GOOGLE_CALENDAR_ID ?? "primary"
-
-  if (!clientId || !clientSecret || !refreshToken) {
-    return NextResponse.json({ ok: false, error: "Missing env vars", clientId: !!clientId, clientSecret: !!clientSecret, refreshToken: !!refreshToken }, { status: 400 })
-  }
-
   try {
-    const { getCalendarClient } = await import("@/lib/google-calendar")
-    const cal = getCalendarClient()
-    const calInfo = await cal.calendars.get({ calendarId })
+    const refreshToken = await getGoogleRefreshToken()
+    const cal = getCalendarClientWithRefreshToken(refreshToken)
+    const calInfo = await cal.calendars.get({ calendarId: CALENDAR_ID })
     const now = new Date()
     const evRes = await cal.events.list({
-      calendarId,
+      calendarId: CALENDAR_ID,
       timeMin: now.toISOString(),
       maxResults: 5,
       singleEvents: true,
@@ -24,7 +19,7 @@ export async function GET() {
     })
     return NextResponse.json({
       ok: true,
-      calendarId,
+      calendarId: CALENDAR_ID,
       calendarSummary: calInfo.data.summary,
       upcomingEvents: evRes.data.items?.length ?? 0,
       nextEvent: evRes.data.items?.[0]?.summary ?? null,
