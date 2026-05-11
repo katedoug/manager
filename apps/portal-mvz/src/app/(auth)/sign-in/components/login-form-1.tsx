@@ -18,6 +18,10 @@ export function LoginForm1({ className, ...props }: React.ComponentProps<"div">)
       options: {
         redirectTo: `${window.location.origin}/auth/callback`,
         scopes: "https://www.googleapis.com/auth/calendar",
+        queryParams: {
+          access_type: "offline",
+          prompt: "consent",
+        },
       },
     })
     if (error) {
