@@ -1,18 +1,16 @@
 import { Calendar } from "./components/calendar"
-import { events as mockEvents, eventDates as mockEventDates } from "./data"
+import { events as mockEvents } from "./data"
 import { type CalendarEvent } from "./types"
+import { createClient } from "@/lib/supabase/server"
 
-async function fetchGoogleEvents(): Promise<CalendarEvent[] | null> {
-  if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_REFRESH_TOKEN) {
-    return null
-  }
+async function fetchGoogleEvents(accessToken: string): Promise<CalendarEvent[] | null> {
   try {
     const now = new Date()
     const timeMin = new Date(now.getFullYear(), now.getMonth(), 1).toISOString()
     const timeMax = new Date(now.getFullYear(), now.getMonth() + 2, 0).toISOString()
 
-    const { getCalendarClient, CALENDAR_ID } = await import("@/lib/google-calendar")
-    const cal = getCalendarClient()
+    const { getCalendarClientWithToken, CALENDAR_ID } = await import("@/lib/google-calendar")
+    const cal = getCalendarClientWithToken(accessToken)
     const res = await cal.events.list({
       calendarId: CALENDAR_ID,
       timeMin,
@@ -59,16 +57,20 @@ async function fetchGoogleEvents(): Promise<CalendarEvent[] | null> {
 }
 
 export default async function CalendarPage() {
-  const googleEvents = await fetchGoogleEvents()
-  const events    = googleEvents ?? mockEvents
+  const supabase = await createClient()
+  const { data: { session } } = await supabase.auth.getSession()
+  const providerToken = session?.provider_token ?? null
+
+  const googleEvents = providerToken ? await fetchGoogleEvents(providerToken) : null
+  const events = googleEvents ?? mockEvents
   const eventDates = events.map(e => ({ date: e.date, count: 1 }))
-  const isLive    = googleEvents !== null
+  const isLive = googleEvents !== null
 
   return (
     <div className="px-4 lg:px-6">
       {!isLive && (
         <p className="mb-3 text-xs text-muted-foreground">
-          Mostrando datos de ejemplo · conecta Google Calendar con las variables de entorno para ver citas reales.
+          Mostrando datos de ejemplo · inicia sesión con Google para ver tu calendario real.
         </p>
       )}
       <Calendar events={events} eventDates={eventDates} />
