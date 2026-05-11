@@ -4,7 +4,6 @@ import * as React from "react"
 import {
   LayoutDashboard,
   Calendar,
-  Video,
   MessageCircle,
   ClipboardList,
   Building2,
@@ -47,11 +46,6 @@ const data = {
           title: "Calendario",
           url: "/calendario",
           icon: Calendar,
-        },
-        {
-          title: "Videollamadas",
-          url: "/videollamadas",
-          icon: Video,
         },
         {
           title: "Chat",

@@ -52,7 +52,8 @@ async function fetchGoogleEvents(): Promise<CalendarEvent[] | null> {
         meetLink,
       }
     })
-  } catch {
+  } catch (err) {
+    console.error("[Google Calendar] fetch failed:", err)
     return null
   }
 }
