@@ -1,5 +1,3 @@
-"use client"
-
 import * as React from "react"
 import {
   LayoutDashboard,
@@ -14,6 +12,7 @@ import {
 import Image from "next/image"
 import Link from "next/link"
 import { SidebarNotification } from "@/components/sidebar-notification"
+import { createClient } from "@/lib/supabase/server"
 
 import { NavMain } from "@/components/nav-main"
 import { NavUser } from "@/components/nav-user"
@@ -27,72 +26,42 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 
-const data = {
-  user: {
-    name: "Dra. Mariana García",
-    email: "mariana@kateanddoug.mx",
-    avatar: "",
+const navGroups = [
+  {
+    label: "Principal",
+    items: [
+      { title: "Resumen",    url: "/dashboard",  icon: LayoutDashboard },
+      { title: "Calendario", url: "/calendario", icon: Calendar },
+      { title: "Chat",       url: "/chat",        icon: MessageCircle },
+    ],
   },
-  navGroups: [
-    {
-      label: "Principal",
-      items: [
-        {
-          title: "Resumen",
-          url: "/dashboard",
-          icon: LayoutDashboard,
-        },
-        {
-          title: "Calendario",
-          url: "/calendario",
-          icon: Calendar,
-        },
-        {
-          title: "Chat",
-          url: "/chat",
-          icon: MessageCircle,
-        },
-      ],
-    },
-    {
-      label: "Clínica",
-      items: [
-        {
-          title: "Pacientes",
-          url: "/pacientes",
-          icon: Users,
-        },
-        {
-          title: "Historial clínico",
-          url: "/historial",
-          icon: ClipboardList,
-        },
-        {
-          title: "Clínicas aliadas",
-          url: "/clinicas",
-          icon: Building2,
-        },
-      ],
-    },
-    {
-      label: "Cuenta",
-      items: [
-        {
-          title: "Métricas CSAT",
-          url: "/metricas",
-          icon: Star,
-        },
-        {
-          title: "Ajustes",
-          url: "/ajustes",
-          icon: Settings,
-        },
-      ],
-    },
-  ],
-}
+  {
+    label: "Clínica",
+    items: [
+      { title: "Pacientes",       url: "/pacientes", icon: Users },
+      { title: "Historial clínico", url: "/historial", icon: ClipboardList },
+      { title: "Clínicas aliadas", url: "/clinicas",  icon: Building2 },
+    ],
+  },
+  {
+    label: "Cuenta",
+    items: [
+      { title: "Métricas CSAT", url: "/metricas", icon: Star },
+      { title: "Ajustes",       url: "/ajustes",  icon: Settings },
+    ],
+  },
+]
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export async function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+
+  const currentUser = {
+    name:   user?.user_metadata?.full_name ?? user?.email ?? "Usuario",
+    email:  user?.email ?? "",
+    avatar: "",
+  }
+
   return (
     <Sidebar {...props}>
       <SidebarHeader>
@@ -113,13 +82,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        {data.navGroups.map((group) => (
+        {navGroups.map((group) => (
           <NavMain key={group.label} label={group.label} items={group.items} />
         ))}
       </SidebarContent>
       <SidebarFooter>
         <SidebarNotification />
-        <NavUser user={data.user} />
+        <NavUser user={currentUser} />
       </SidebarFooter>
     </Sidebar>
   )
