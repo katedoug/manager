@@ -3,14 +3,14 @@ import { events as mockEvents } from "./data"
 import { type CalendarEvent } from "./types"
 import { createClient } from "@/lib/supabase/server"
 
-async function fetchGoogleEvents(accessToken: string): Promise<CalendarEvent[] | null> {
+async function fetchGoogleEvents(refreshToken: string): Promise<CalendarEvent[] | null> {
   try {
     const now = new Date()
     const timeMin = new Date(now.getFullYear(), now.getMonth(), 1).toISOString()
     const timeMax = new Date(now.getFullYear(), now.getMonth() + 2, 0).toISOString()
 
-    const { getCalendarClientWithToken, CALENDAR_ID } = await import("@/lib/google-calendar")
-    const cal = getCalendarClientWithToken(accessToken)
+    const { getCalendarClientWithRefreshToken, CALENDAR_ID } = await import("@/lib/google-calendar")
+    const cal = getCalendarClientWithRefreshToken(refreshToken)
     const res = await cal.events.list({
       calendarId: CALENDAR_ID,
       timeMin,
@@ -58,10 +58,10 @@ async function fetchGoogleEvents(accessToken: string): Promise<CalendarEvent[] |
 
 export default async function CalendarPage() {
   const supabase = await createClient()
-  const { data: { session } } = await supabase.auth.getSession()
-  const providerToken = session?.provider_token ?? null
+  const { data: { user } } = await supabase.auth.getUser()
+  const googleRefreshToken = user?.user_metadata?.google_refresh_token ?? null
 
-  const googleEvents = providerToken ? await fetchGoogleEvents(providerToken) : null
+  const googleEvents = googleRefreshToken ? await fetchGoogleEvents(googleRefreshToken) : null
   const events = googleEvents ?? mockEvents
   const eventDates = events.map(e => ({ date: e.date, count: 1 }))
   const isLive = googleEvents !== null

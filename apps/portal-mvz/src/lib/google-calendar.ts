@@ -1,8 +1,10 @@
 import { google } from "googleapis"
 
-export function getCalendarClientWithToken(accessToken: string) {
-  const oauth2 = new google.auth.OAuth2()
-  oauth2.setCredentials({ access_token: accessToken })
+export function getCalendarClientWithRefreshToken(refreshToken: string) {
+  const clientId     = process.env.GOOGLE_CLIENT_ID!
+  const clientSecret = process.env.GOOGLE_CLIENT_SECRET!
+  const oauth2 = new google.auth.OAuth2(clientId, clientSecret)
+  oauth2.setCredentials({ refresh_token: refreshToken })
   return google.calendar({ version: "v3", auth: oauth2 })
 }
 

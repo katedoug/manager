@@ -7,7 +7,14 @@ export async function GET(request: Request) {
 
   if (code) {
     const supabase = await createClient()
-    await supabase.auth.exchangeCodeForSession(code)
+    const { data } = await supabase.auth.exchangeCodeForSession(code)
+
+    // Persist Google refresh token in user metadata for server-side calendar access
+    if (data.session?.provider_refresh_token) {
+      await supabase.auth.updateUser({
+        data: { google_refresh_token: data.session.provider_refresh_token },
+      })
+    }
   }
 
   return NextResponse.redirect(`${origin}/dashboard`)
