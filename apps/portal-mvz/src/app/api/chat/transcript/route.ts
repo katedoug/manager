@@ -16,12 +16,16 @@ async function getWhiteLogoDataUri(): Promise<string> {
   return `data:image/png;base64,${buf.toString("base64")}`
 }
 
-const streamServer = new StreamChat(
-  process.env.NEXT_PUBLIC_STREAM_API_KEY!,
-  process.env.STREAM_SECRET_KEY!
-)
+function getStreamServer() {
+  return new StreamChat(
+    process.env.NEXT_PUBLIC_STREAM_API_KEY!,
+    process.env.STREAM_SECRET_KEY!
+  )
+}
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+function getResend() {
+  return new Resend(process.env.RESEND_API_KEY)
+}
 
 // Mock vet data — replace with real Supabase query when available
 const VET_MOCK = {
@@ -40,6 +44,9 @@ export async function POST(request: Request) {
   }
 
   try {
+  const streamServer = getStreamServer()
+  const resend = getResend()
+
   // Fetch messages from Stream
   const channel = streamServer.channel("messaging", channelId)
   const { messages } = await channel.query({ messages: { limit: 300 } })
