@@ -7,7 +7,6 @@ import {
   Channel,
   ChannelList,
   MessageList,
-  MessageComposer,
   MessageComposerUI,
   Window,
   Thread,
@@ -135,9 +134,7 @@ function ChatArea({ onClose, onBack, pickedChannel, justClosed }: ChatAreaProps)
       <Window>
         <ConsultationHeader onClose={onClose} onBack={onBack} />
         <MessageList />
-        <MessageComposer>
-          <MessageComposerUI />
-        </MessageComposer>
+        <MessageComposerUI />
       </Window>
       <Thread />
     </Channel>
