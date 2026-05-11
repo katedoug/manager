@@ -66,21 +66,9 @@ export default async function CalendarPage() {
 
   return (
     <div className="px-4 lg:px-6">
-      {!googleRefreshToken && (
-        <p className="mb-3 text-xs text-muted-foreground">
-          Mostrando datos de ejemplo · inicia sesión con Google para ver tu calendario real.
-        </p>
-      )}
-      {fetchError && (
-        <p className="mb-3 text-xs text-red-500">
-          Error al cargar calendario de Google: {fetchError}
-        </p>
-      )}
-      {googleEvents && (
-        <p className="mb-3 text-xs text-green-600">
-          {googleEvents.length} eventos cargados desde Google Calendar.
-        </p>
-      )}
+      <pre className="mb-3 rounded bg-black text-green-400 text-xs p-3">
+        {JSON.stringify({ hasToken: !!googleRefreshToken, tokenLen: googleRefreshToken?.length ?? 0, googleEventCount: googleEvents?.length ?? null, fetchError }, null, 2)}
+      </pre>
       <Calendar events={events} eventDates={eventDates} />
     </div>
   )
