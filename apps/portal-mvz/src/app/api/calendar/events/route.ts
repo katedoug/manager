@@ -1,16 +1,17 @@
 import { NextResponse } from "next/server"
 import { getCalendarClientWithRefreshToken, CALENDAR_ID } from "@/lib/google-calendar"
-import { createClient } from "@/lib/supabase/server"
+import { getGoogleRefreshToken, CORS_HEADERS } from "@/lib/calendar-auth"
 import { calendar_v3 } from "googleapis"
 
 export const dynamic = "force-dynamic"
 
+export async function OPTIONS() {
+  return new Response(null, { status: 204, headers: CORS_HEADERS })
+}
+
 async function getCalendar() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  const refreshToken = user?.user_metadata?.google_refresh_token
-  if (!refreshToken) throw new Error("No Google refresh token — inicia sesión con Google primero")
-  return getCalendarClientWithRefreshToken(refreshToken)
+  const token = await getGoogleRefreshToken()
+  return getCalendarClientWithRefreshToken(token)
 }
 
 // GET /api/calendar/events?timeMin=...&timeMax=...
@@ -73,10 +74,10 @@ export async function POST(req: Request) {
       requestBody: resource,
     })
 
-    return NextResponse.json(toAppEvent(res.data), { status: 201 })
+    return NextResponse.json(toAppEvent(res.data), { status: 201, headers: CORS_HEADERS })
   } catch (e: unknown) {
     const msg = e instanceof Error ? e.message : String(e)
-    return NextResponse.json({ error: msg }, { status: 500 })
+    return NextResponse.json({ error: msg }, { status: 500, headers: CORS_HEADERS })
   }
 }
 
