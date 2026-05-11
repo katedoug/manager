@@ -114,6 +114,12 @@ importers:
       '@stream-io/video-react-sdk':
         specifier: ^1.36.1
         version: 1.36.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(typescript@5.9.3)
+      '@supabase/ssr':
+        specifier: ^0.10.2
+        version: 0.10.2(@supabase/supabase-js@2.105.3)
+      '@supabase/supabase-js':
+        specifier: ^2.105.3
+        version: 2.105.3
       '@tailwindcss/postcss':
         specifier: ^4.1.18
         version: 4.2.4

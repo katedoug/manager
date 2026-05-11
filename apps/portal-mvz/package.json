@@ -37,6 +37,8 @@
     "@radix-ui/react-toggle-group": "^1.1.11",
     "@radix-ui/react-tooltip": "^1.2.8",
     "@stream-io/video-react-sdk": "^1.36.1",
+    "@supabase/ssr": "^0.10.2",
+    "@supabase/supabase-js": "^2.105.3",
     "@tailwindcss/postcss": "^4.1.18",
     "@tanstack/react-table": "^8.21.3",
     "class-variance-authority": "^0.7.1",
