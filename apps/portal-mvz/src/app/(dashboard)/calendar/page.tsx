@@ -3,6 +3,8 @@ import { events as mockEvents } from "./data"
 import { type CalendarEvent } from "./types"
 import { createClient } from "@/lib/supabase/server"
 
+export const dynamic = "force-dynamic"
+
 export default async function CalendarPage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
