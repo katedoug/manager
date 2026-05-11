@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
-import { getCalendarClient, CALENDAR_ID } from "@/lib/google-calendar"
+import { getCalendarClientWithRefreshToken, CALENDAR_ID } from "@/lib/google-calendar"
+import { createClient } from "@/lib/supabase/server"
 
 export const dynamic = "force-dynamic"
 
@@ -11,11 +12,16 @@ export async function GET(req: Request) {
     const dateStr = searchParams.get("date")
     if (!dateStr) return NextResponse.json({ error: "date param required" }, { status: 400 })
 
+    const supabase = await createClient()
+    const { data: { user } } = await supabase.auth.getUser()
+    const refreshToken = user?.user_metadata?.google_refresh_token
+    if (!refreshToken) return NextResponse.json({ error: "No Google refresh token" }, { status: 401 })
+
     const tz = "America/Mexico_City"
     const dayStart = new Date(`${dateStr}T09:00:00`)
     const dayEnd   = new Date(`${dateStr}T18:00:00`)
 
-    const cal = getCalendarClient()
+    const cal = getCalendarClientWithRefreshToken(refreshToken)
     const freeBusy = await cal.freebusy.query({
       requestBody: {
         timeMin: dayStart.toISOString(),

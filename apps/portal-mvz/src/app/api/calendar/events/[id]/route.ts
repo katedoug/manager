@@ -1,12 +1,21 @@
 import { NextResponse } from "next/server"
-import { getCalendarClient, CALENDAR_ID } from "@/lib/google-calendar"
+import { getCalendarClientWithRefreshToken, CALENDAR_ID } from "@/lib/google-calendar"
+import { createClient } from "@/lib/supabase/server"
+
+async function getCalendar() {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  const refreshToken = user?.user_metadata?.google_refresh_token
+  if (!refreshToken) throw new Error("No Google refresh token")
+  return getCalendarClientWithRefreshToken(refreshToken)
+}
 
 // PATCH /api/calendar/events/[id] — reschedule / update
 export async function PATCH(req: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params
     const body = await req.json()
-    const cal = getCalendarClient()
+    const cal = await getCalendar()
 
     // Fetch existing event first to merge
     const existing = await cal.events.get({ calendarId: CALENDAR_ID, eventId: id })
@@ -41,7 +50,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
 export async function DELETE(_req: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params
-    const cal = getCalendarClient()
+    const cal = await getCalendar()
     await cal.events.delete({ calendarId: CALENDAR_ID, eventId: id, sendUpdates: "all" })
     return NextResponse.json({ deleted: true })
   } catch (e: unknown) {

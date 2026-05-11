@@ -1,8 +1,17 @@
 import { NextResponse } from "next/server"
-import { getCalendarClient, CALENDAR_ID } from "@/lib/google-calendar"
+import { getCalendarClientWithRefreshToken, CALENDAR_ID } from "@/lib/google-calendar"
+import { createClient } from "@/lib/supabase/server"
 import { calendar_v3 } from "googleapis"
 
 export const dynamic = "force-dynamic"
+
+async function getCalendar() {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  const refreshToken = user?.user_metadata?.google_refresh_token
+  if (!refreshToken) throw new Error("No Google refresh token — inicia sesión con Google primero")
+  return getCalendarClientWithRefreshToken(refreshToken)
+}
 
 // GET /api/calendar/events?timeMin=...&timeMax=...
 export async function GET(req: Request) {
@@ -11,7 +20,7 @@ export async function GET(req: Request) {
     const timeMin = searchParams.get("timeMin") ?? new Date().toISOString()
     const timeMax = searchParams.get("timeMax") ?? new Date(Date.now() + 30 * 86_400_000).toISOString()
 
-    const cal = getCalendarClient()
+    const cal = await getCalendar()
     const res = await cal.events.list({
       calendarId: CALENDAR_ID,
       timeMin,
@@ -56,7 +65,7 @@ export async function POST(req: Request) {
       },
     }
 
-    const cal = getCalendarClient()
+    const cal = await getCalendar()
     const res = await cal.events.insert({
       calendarId: CALENDAR_ID,
       conferenceDataVersion: 1,
