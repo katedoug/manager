@@ -1,0 +1,12 @@
+[
+  {
+    "id": "1",
+    "name": "Sarah Mitchell",
+    "email": "sarah.mitchell@example.com",
+    "avatar": "https://notion-avatars.netlify.app/api/avatar/?preset=female-7",
+    "status": "online",
+    "lastSeen": "2024-01-15T10:30:00Z",
+    "role": "Project Manager",
+    "department": "Product"
+  }
+]
