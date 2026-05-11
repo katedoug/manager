@@ -12,8 +12,6 @@ import {
 import Image from "next/image"
 import Link from "next/link"
 import { SidebarNotification } from "@/components/sidebar-notification"
-import { createClient } from "@/lib/supabase/server"
-
 import { NavMain } from "@/components/nav-main"
 import { NavUser } from "@/components/nav-user"
 import {
@@ -38,9 +36,9 @@ const navGroups = [
   {
     label: "Clínica",
     items: [
-      { title: "Pacientes",       url: "/pacientes", icon: Users },
+      { title: "Pacientes",        url: "/pacientes", icon: Users },
       { title: "Historial clínico", url: "/historial", icon: ClipboardList },
-      { title: "Clínicas aliadas", url: "/clinicas",  icon: Building2 },
+      { title: "Clínicas aliadas",  url: "/clinicas",  icon: Building2 },
     ],
   },
   {
@@ -52,16 +50,16 @@ const navGroups = [
   },
 ]
 
-export async function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
+interface User {
+  name: string
+  email: string
+  avatar: string
+}
 
-  const currentUser = {
-    name:   user?.user_metadata?.full_name ?? user?.email ?? "Usuario",
-    email:  user?.email ?? "",
-    avatar: "",
-  }
-
+export function AppSidebar({
+  user,
+  ...props
+}: React.ComponentProps<typeof Sidebar> & { user: User }) {
   return (
     <Sidebar {...props}>
       <SidebarHeader>
@@ -88,7 +86,7 @@ export async function AppSidebar({ ...props }: React.ComponentProps<typeof Sideb
       </SidebarContent>
       <SidebarFooter>
         <SidebarNotification />
-        <NavUser user={currentUser} />
+        <NavUser user={user} />
       </SidebarFooter>
     </Sidebar>
   )
