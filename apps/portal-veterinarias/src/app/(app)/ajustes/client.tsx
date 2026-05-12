@@ -191,6 +191,66 @@ function TabCuenta({ userEmail }: { userEmail: string }) {
   )
 }
 
+// ── Google Places Autocomplete input ─────────────────────────────────────────
+// Self-contained: mounts → polls until window.google.maps.places is ready →
+// attaches Autocomplete. Works inside dialogs/portals without any parent state.
+
+function AddressAutocompleteInput({
+  name,
+  placeholder,
+  defaultValue,
+  onSelect,
+}: {
+  name?: string
+  placeholder?: string
+  defaultValue?: string
+  onSelect?: (address: string) => void
+}) {
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    let active = true
+    let retryTimer: ReturnType<typeof setTimeout>
+
+    function init() {
+      if (!active) return
+      const input = inputRef.current
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const g = (window as any).google
+      if (!input || !g?.maps?.places) {
+        retryTimer = setTimeout(init, 200)
+        return
+      }
+      const ac = new g.maps.places.Autocomplete(input, {
+        componentRestrictions: { country: "mx" },
+        fields: ["formatted_address"],
+        types: ["address"],
+      })
+      if (onSelect) {
+        ac.addListener("place_changed", () => {
+          onSelect(ac.getPlace()?.formatted_address ?? "")
+        })
+      }
+    }
+
+    init()
+    return () => {
+      active = false
+      clearTimeout(retryTimer)
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  return (
+    <Input
+      ref={inputRef}
+      name={name}
+      placeholder={placeholder}
+      defaultValue={defaultValue}
+    />
+  )
+}
+
 // ── Tab: Perfil ───────────────────────────────────────────────────────────────
 
 interface TabPerfilProps {
@@ -206,13 +266,8 @@ function TabPerfil({ hasClinics, clinicName, clinicAddress, clinicPhone, clinicE
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [profileImage, setProfileImage] = useState<string | null>(null)
   const accordionRefs = useRef<Record<string, HTMLDivElement | null>>({})
-  const modalAddressRef = useRef<HTMLInputElement>(null)
-  const accordionAddressRef = useRef<HTMLInputElement>(null)
-  const [mapsReady, setMapsReady] = useState(false)
-  const [accordionOpen, setAccordionOpen] = useState("")
 
   function handleAccordionChange(value: string) {
-    setAccordionOpen(value)
     if (!value) return
     const el = accordionRefs.current[value]
     if (el) setTimeout(() => el.scrollIntoView({ behavior: "smooth", block: "start" }), 120)
@@ -294,44 +349,6 @@ function TabPerfil({ hasClinics, clinicName, clinicAddress, clinicPhone, clinicE
     }
   }, [sucursalState])
 
-  // Autocomplete for the "Nueva sucursal" modal address field
-  useEffect(() => {
-    if (!nuevaSucursalOpen || !mapsReady) return
-    const input = modalAddressRef.current
-    if (!input) return
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const g = (window as any).google
-    if (!g?.maps?.places) return
-    const ac = new g.maps.places.Autocomplete(input, {
-      componentRestrictions: { country: "mx" },
-      fields: ["formatted_address"],
-      types: ["address"],
-    })
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return () => { (window as any).google?.maps?.event?.clearInstanceListeners(ac) }
-  }, [nuevaSucursalOpen, mapsReady])
-
-  // Autocomplete for the existing clinic accordion address field
-  useEffect(() => {
-    if (!mapsReady || !accordionOpen) return
-    const input = accordionAddressRef.current
-    if (!input) return
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const g = (window as any).google
-    if (!g?.maps?.places) return
-    const ac = new g.maps.places.Autocomplete(input, {
-      componentRestrictions: { country: "mx" },
-      fields: ["formatted_address"],
-      types: ["address"],
-    })
-    ac.addListener("place_changed", () => {
-      const addr: string = ac.getPlace()?.formatted_address ?? ""
-      form.setValue("location", addr)
-    })
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return () => { (window as any).google?.maps?.event?.clearInstanceListeners(ac) }
-  }, [mapsReady, accordionOpen])
-
   function handleCitasSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     const fd = new FormData(e.currentTarget)
@@ -344,7 +361,6 @@ function TabPerfil({ hasClinics, clinicName, clinicAddress, clinicPhone, clinicE
       <Script
         src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`}
         strategy="afterInteractive"
-        onLoad={() => setMapsReady(true)}
       />
     )}
     <Form {...form}>
@@ -432,10 +448,10 @@ function TabPerfil({ hasClinics, clinicName, clinicAddress, clinicPhone, clinicE
                         )} />
                         <div className="space-y-2">
                           <label className="text-sm font-medium leading-none">Dirección</label>
-                          <Input
-                            ref={accordionAddressRef}
+                          <AddressAutocompleteInput
                             placeholder="Av. Principal 123, Col. Centro"
                             defaultValue={clinicAddress}
+                            onSelect={(addr) => form.setValue("location", addr)}
                           />
                         </div>
                       </div>
@@ -622,7 +638,7 @@ function TabPerfil({ hasClinics, clinicName, clinicAddress, clinicPhone, clinicE
                   </div>
                   <div className="col-span-full space-y-1.5">
                     <label className="text-sm font-medium">Dirección</label>
-                    <Input ref={modalAddressRef} name="address" placeholder="Av. Principal 123, Col. Centro" />
+                    <AddressAutocompleteInput name="address" placeholder="Av. Principal 123, Col. Centro" />
                   </div>
                 </div>
               </div>
