@@ -4,16 +4,10 @@ import { useEffect, useRef, useState } from "react"
 import { setOptions, importLibrary } from "@googlemaps/js-api-loader"
 import { Input } from "@/components/ui/input"
 
-// Configure the Maps API key once at module load
-setOptions({
-  key: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ?? "",
-  version: "weekly",
-})
-
 interface Props extends Omit<React.ComponentProps<typeof Input>, "onChange" | "value"> {
-  /** Pass field.value for react-hook-form controlled usage */
+  /** Controlled value — pass field.value when using react-hook-form */
   value?: string
-  /** Pass field.onChange for react-hook-form controlled usage */
+  /** Controlled change handler — pass field.onChange when using react-hook-form */
   onChange?: (value: string) => void
 }
 
@@ -21,13 +15,19 @@ export function PlacesAutocompleteInput({ value, onChange, ...props }: Props) {
   const inputRef = useRef<HTMLInputElement>(null)
   const [local, setLocal] = useState(value ?? "")
 
-  // Stay in sync when parent controls the value (react-hook-form)
+  // Stay in sync when the parent controls the value (react-hook-form)
   useEffect(() => {
     if (value !== undefined) setLocal(value)
   }, [value])
 
   useEffect(() => {
-    if (!process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY) return
+    const key = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
+    if (!key || !inputRef.current) return
+
+    // setOptions MUST be called inside useEffect — the bootstrap function
+    // in @googlemaps/js-api-loader accesses window/document synchronously,
+    // which throws a ReferenceError during SSR if called at module scope.
+    setOptions({ key, version: "weekly" })
 
     let active = true
 
@@ -51,9 +51,7 @@ export function PlacesAutocompleteInput({ value, onChange, ...props }: Props) {
           onChange?.(addr)
         })
       })
-      .catch(() => {
-        // Falls back to a plain text input on API failure
-      })
+      .catch(console.error)
 
     return () => {
       active = false
