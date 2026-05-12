@@ -11,13 +11,11 @@ export async function getSessionAndClinic() {
     .select("role, clinic:clinics(id, name, slug, address, phone, email, created_at)")
     .eq("user_id", user.id)
     .eq("is_active", true)
-    .single()
-
-  if (!data) return null
+    .maybeSingle()
 
   return {
     user,
-    clinic: data.clinic as unknown as {
+    clinic: (data?.clinic ?? null) as {
       id: string
       name: string
       slug: string | null
@@ -25,7 +23,7 @@ export async function getSessionAndClinic() {
       phone: string | null
       email: string | null
       created_at: string
-    },
-    role: data.role as string,
+    } | null,
+    role: (data?.role ?? null) as string | null,
   }
 }

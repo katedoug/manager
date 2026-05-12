@@ -193,6 +193,7 @@ function TabCuenta({ userEmail }: { userEmail: string }) {
 // ── Tab: Perfil ───────────────────────────────────────────────────────────────
 
 interface TabPerfilProps {
+  hasClinics: boolean
   clinicName: string
   clinicAddress: string
   clinicPhone: string
@@ -200,7 +201,7 @@ interface TabPerfilProps {
   clinicSlug: string
 }
 
-function TabPerfil({ clinicName, clinicAddress, clinicPhone, clinicEmail, clinicSlug }: TabPerfilProps) {
+function TabPerfil({ hasClinics, clinicName, clinicAddress, clinicPhone, clinicEmail, clinicSlug }: TabPerfilProps) {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [profileImage, setProfileImage] = useState<string | null>(null)
   const accordionRefs = useRef<Record<string, HTMLDivElement | null>>({})
@@ -304,6 +305,20 @@ function TabPerfil({ clinicName, clinicAddress, clinicPhone, clinicEmail, clinic
             <CardDescription>Selecciona una sucursal para editar su configuración</CardDescription>
           </CardHeader>
           <CardContent className="space-y-3 pb-4">
+            {!hasClinics ? (
+              <div className="flex flex-col items-center justify-center gap-4 rounded-lg border border-dashed py-14 text-center">
+                <div className="flex size-14 items-center justify-center rounded-full bg-muted">
+                  <MapPin className="size-6 text-muted-foreground" />
+                </div>
+                <div className="space-y-1">
+                  <p className="text-sm font-semibold">Aún no tienes sucursales</p>
+                  <p className="text-xs text-muted-foreground">Crea tu primera sucursal para empezar a recibir citas.</p>
+                </div>
+                <Button size="lg" type="button" onClick={() => setNuevaSucursalOpen(true)}>
+                  Crear mi primera sucursal
+                </Button>
+              </div>
+            ) : (
             <Accordion type="single" collapsible className="space-y-2" onValueChange={handleAccordionChange}>
               {clinicName && (
               <AccordionItem value="clinica-principal" ref={(el) => { accordionRefs.current["clinica-principal"] = el }} className="rounded-lg border px-4 data-[state=open]:border-primary/40">
@@ -500,6 +515,7 @@ function TabPerfil({ clinicName, clinicAddress, clinicPhone, clinicEmail, clinic
               <Plus className="size-4" />
               Crear nueva sucursal
             </button>
+            )}
           </CardContent>
         </Card>
 
@@ -834,6 +850,7 @@ function TabNotificaciones() {
 // ── Page ──────────────────────────────────────────────────────────────────────
 
 interface AjustesClientProps {
+  hasClinics: boolean
   clinicName: string
   clinicAddress: string
   clinicPhone: string
@@ -842,7 +859,7 @@ interface AjustesClientProps {
   userEmail: string
 }
 
-export function AjustesClient({ clinicName, clinicAddress, clinicPhone, clinicEmail, clinicSlug, userEmail }: AjustesClientProps) {
+export function AjustesClient({ hasClinics, clinicName, clinicAddress, clinicPhone, clinicEmail, clinicSlug, userEmail }: AjustesClientProps) {
   const [active, setActive] = useState("cuenta")
 
   return (
@@ -878,7 +895,7 @@ export function AjustesClient({ clinicName, clinicAddress, clinicPhone, clinicEm
           {/* Content */}
           <div className="min-w-0 flex-1">
             {active === "cuenta"         && <TabCuenta userEmail={userEmail} />}
-            {active === "perfil"         && <TabPerfil clinicName={clinicName} clinicAddress={clinicAddress} clinicPhone={clinicPhone} clinicEmail={clinicEmail} clinicSlug={clinicSlug} />}
+            {active === "perfil"         && <TabPerfil hasClinics={hasClinics} clinicName={clinicName} clinicAddress={clinicAddress} clinicPhone={clinicPhone} clinicEmail={clinicEmail} clinicSlug={clinicSlug} />}
             {active === "apariencia"     && <TabApariencia />}
             {active === "notificaciones" && <TabNotificaciones />}
           </div>
