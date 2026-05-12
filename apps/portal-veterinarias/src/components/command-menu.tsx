@@ -26,7 +26,7 @@ import {
 } from "@/components/ui/command"
 
 const NAV_VETERINARIA = [
-  { title: "Inicio",            url: "/dashboard",         icon: Home         },
+  { title: "Inicio",            url: "/",         icon: Home         },
   { title: "Citas",             url: "/citas",             icon: CalendarDays  },
   { title: "Historial Clínico", url: "/historial-clinico", icon: FileText     },
   { title: "Desempeño",         url: "/desempeno",         icon: BarChart2    },
