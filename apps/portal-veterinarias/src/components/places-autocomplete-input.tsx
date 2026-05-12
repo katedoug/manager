@@ -1,64 +1,44 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
+import { setOptions, importLibrary } from "@googlemaps/js-api-loader"
 import { Input } from "@/components/ui/input"
-import { cn } from "@/lib/utils"
 
-// Singleton so the script is only injected once per page
-let mapsPromise: Promise<void> | null = null
+// Configure the Maps API key once at module load
+setOptions({
+  key: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ?? "",
+  version: "weekly",
+})
 
-function loadGoogleMaps(): Promise<void> {
-  if (typeof window === "undefined") return Promise.resolve()
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  if ((window as any).google?.maps?.places) return Promise.resolve()
-  if (mapsPromise) return mapsPromise
-
-  mapsPromise = new Promise((resolve, reject) => {
-    const key = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
-    if (!key) { reject(new Error("NEXT_PUBLIC_GOOGLE_MAPS_API_KEY is not set")); return }
-
-    const script = document.createElement("script")
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${key}&libraries=places`
-    script.async = true
-    script.defer = true
-    script.onload = () => resolve()
-    script.onerror = () => { mapsPromise = null; reject(new Error("Failed to load Google Maps")) }
-    document.head.appendChild(script)
-  })
-
-  return mapsPromise
-}
-
-interface PlacesAutocompleteInputProps extends Omit<React.ComponentProps<typeof Input>, "onChange" | "value"> {
+interface Props extends Omit<React.ComponentProps<typeof Input>, "onChange" | "value"> {
+  /** Pass field.value for react-hook-form controlled usage */
   value?: string
+  /** Pass field.onChange for react-hook-form controlled usage */
   onChange?: (value: string) => void
 }
 
-export function PlacesAutocompleteInput({
-  value,
-  onChange,
-  placeholder,
-  name,
-  className,
-  ...props
-}: PlacesAutocompleteInputProps) {
+export function PlacesAutocompleteInput({ value, onChange, ...props }: Props) {
   const inputRef = useRef<HTMLInputElement>(null)
   const [local, setLocal] = useState(value ?? "")
 
-  // Keep in sync when parent controls the value
+  // Stay in sync when parent controls the value (react-hook-form)
   useEffect(() => {
     if (value !== undefined) setLocal(value)
   }, [value])
 
   useEffect(() => {
-    let destroyed = false
+    if (!process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY) return
 
-    loadGoogleMaps()
-      .then(() => {
-        if (destroyed || !inputRef.current) return
+    let active = true
+
+    importLibrary("places")
+      .then((lib) => {
+        if (!active || !inputRef.current) return
+
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const g = (window as any).google
-        const ac = new g.maps.places.Autocomplete(inputRef.current, {
+        const { Autocomplete } = lib as any
+
+        const ac = new Autocomplete(inputRef.current, {
           componentRestrictions: { country: "mx" },
           fields: ["formatted_address"],
           types: ["address"],
@@ -66,14 +46,18 @@ export function PlacesAutocompleteInput({
 
         ac.addListener("place_changed", () => {
           const place = ac.getPlace()
-          const addr: string = place.formatted_address ?? ""
+          const addr: string = place?.formatted_address ?? ""
           setLocal(addr)
           onChange?.(addr)
         })
       })
-      .catch(() => { /* API key missing or network error — fall back to plain input */ })
+      .catch(() => {
+        // Falls back to a plain text input on API failure
+      })
 
-    return () => { destroyed = true }
+    return () => {
+      active = false
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -81,10 +65,7 @@ export function PlacesAutocompleteInput({
     <Input
       {...props}
       ref={inputRef}
-      name={name}
       value={local}
-      placeholder={placeholder}
-      className={cn(className)}
       onChange={(e) => {
         setLocal(e.target.value)
         onChange?.(e.target.value)

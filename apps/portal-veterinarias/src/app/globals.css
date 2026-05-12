@@ -160,3 +160,8 @@
     @apply font-sans;
   }
 }
+
+/* Google Places Autocomplete dropdown — must sit above dialogs */
+.pac-container {
+  z-index: 9999;
+}
