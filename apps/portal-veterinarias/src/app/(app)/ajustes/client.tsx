@@ -319,6 +319,7 @@ function TabPerfil({ hasClinics, clinicName, clinicAddress, clinicPhone, clinicE
                 </Button>
               </div>
             ) : (
+            <>
             <Accordion type="single" collapsible className="space-y-2" onValueChange={handleAccordionChange}>
               {clinicName && (
               <AccordionItem value="clinica-principal" ref={(el) => { accordionRefs.current["clinica-principal"] = el }} className="rounded-lg border px-4 data-[state=open]:border-primary/40">
@@ -515,6 +516,7 @@ function TabPerfil({ hasClinics, clinicName, clinicAddress, clinicPhone, clinicE
               <Plus className="size-4" />
               Crear nueva sucursal
             </button>
+            </>
             )}
           </CardContent>
         </Card>
