@@ -14,6 +14,7 @@ import {
 
 import { HideLoader } from "@/components/hide-loader"
 import { TopBar } from "@/components/top-bar"
+import { PlacesAutocompleteInput } from "@/components/places-autocomplete-input"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -379,7 +380,17 @@ function TabPerfil({ hasClinics, clinicName, clinicAddress, clinicPhone, clinicE
                           <FormItem><FormLabel>Teléfono</FormLabel><FormControl><Input type="tel" placeholder="+52 (55) 1234-5678" {...field} /></FormControl><FormMessage /></FormItem>
                         )} />
                         <FormField control={form.control} name="location" render={({ field }) => (
-                          <FormItem><FormLabel>Dirección</FormLabel><FormControl><Input placeholder="Av. Principal 123, Col. Centro" {...field} /></FormControl><FormMessage /></FormItem>
+                          <FormItem>
+                            <FormLabel>Dirección</FormLabel>
+                            <FormControl>
+                              <PlacesAutocompleteInput
+                                placeholder="Av. Principal 123, Col. Centro"
+                                value={field.value ?? ""}
+                                onChange={field.onChange}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
                         )} />
                       </div>
                     </div>
@@ -565,7 +576,7 @@ function TabPerfil({ hasClinics, clinicName, clinicAddress, clinicPhone, clinicE
                   </div>
                   <div className="col-span-full space-y-1.5">
                     <label className="text-sm font-medium">Dirección</label>
-                    <Input name="address" placeholder="Av. Principal 123, Col. Centro" />
+                    <PlacesAutocompleteInput name="address" placeholder="Av. Principal 123, Col. Centro" />
                   </div>
                 </div>
               </div>
