@@ -210,7 +210,7 @@ export function DataTable({ patients, onAddPatient }: DataTableProps) {
           />
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="outline" className="hidden cursor-pointer">
+          <Button size="lg" variant="outline" className="hidden cursor-pointer">
             <Download className="mr-2 size-4" />
             Exportar
           </Button>
@@ -249,7 +249,7 @@ export function DataTable({ patients, onAddPatient }: DataTableProps) {
           <Label className="text-sm font-medium">Columnas</Label>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="cursor-pointer w-full">
+              <Button size="lg" variant="outline" className="cursor-pointer w-full">
                 Visibilidad <ChevronDown className="ml-2 size-4" />
               </Button>
             </DropdownMenuTrigger>
@@ -323,10 +323,10 @@ export function DataTable({ patients, onAddPatient }: DataTableProps) {
           <span className="text-sm hidden sm:block">
             Página <strong>{table.getState().pagination.pageIndex + 1}</strong> de <strong>{table.getPageCount()}</strong>
           </span>
-          <Button variant="outline" size="sm" onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()} className="cursor-pointer">
+          <Button variant="outline" size="lg" onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()} className="cursor-pointer">
             Anterior
           </Button>
-          <Button variant="outline" size="sm" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()} className="cursor-pointer">
+          <Button variant="outline" size="lg" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()} className="cursor-pointer">
             Siguiente
           </Button>
         </div>

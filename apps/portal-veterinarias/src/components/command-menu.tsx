@@ -63,7 +63,7 @@ export function CommandMenu() {
     <>
       <Button
         variant="outline"
-        size="sm"
+        size="lg"
         onClick={() => setOpen(true)}
         className="h-8 w-40 justify-between gap-2 pr-1.5 text-sm font-normal text-muted-foreground"
       >

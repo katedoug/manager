@@ -162,8 +162,8 @@ export function CustomerInsights() {
                 {speciesRows.length} especies registradas
               </div>
               <div className="space-x-2">
-                <Button variant="outline" size="sm" disabled>Anterior</Button>
-                <Button variant="outline" size="sm" disabled>Siguiente</Button>
+                <Button variant="outline" size="lg" disabled>Anterior</Button>
+                <Button variant="outline" size="lg" disabled>Siguiente</Button>
               </div>
             </div>
           </TabsContent>
@@ -198,8 +198,8 @@ export function CustomerInsights() {
                 {zonesRows.length} zonas registradas
               </div>
               <div className="space-x-2">
-                <Button variant="outline" size="sm" disabled>Anterior</Button>
-                <Button variant="outline" size="sm" disabled>Siguiente</Button>
+                <Button variant="outline" size="lg" disabled>Anterior</Button>
+                <Button variant="outline" size="lg" disabled>Siguiente</Button>
               </div>
             </div>
           </TabsContent>

@@ -29,7 +29,7 @@ export function CalendarSidebar({
   return (
     <div className={`flex flex-col h-full bg-background rounded-lg ${className}`}>
       <div className="p-6 border-b">
-        <Button className="w-full cursor-pointer" onClick={onNewEvent}>
+        <Button size="lg" className="w-full cursor-pointer" onClick={onNewEvent}>
           <Plus className="w-4 h-4 mr-2" />
           Nueva Cita
         </Button>

@@ -51,7 +51,7 @@ export function PatientFormDialog({ onAddPatient }: PatientFormDialogProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="cursor-pointer">
+        <Button size="lg" className="cursor-pointer">
           <Plus className="mr-2 h-4 w-4" />
           Nuevo Paciente
         </Button>
@@ -126,7 +126,7 @@ export function PatientFormDialog({ onAddPatient }: PatientFormDialogProps) {
               </FormItem>
             )} />
             <DialogFooter>
-              <Button type="submit" className="cursor-pointer">Guardar Paciente</Button>
+              <Button size="lg" type="submit" className="cursor-pointer">Guardar Paciente</Button>
             </DialogFooter>
           </form>
         </Form>

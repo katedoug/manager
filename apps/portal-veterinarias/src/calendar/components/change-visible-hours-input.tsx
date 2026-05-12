@@ -47,7 +47,7 @@ export function ChangeVisibleHoursInput() {
         <TimeInput id="end-time" hourCycle={12} granularity="hour" value={to as TimeValue} onChange={setTo as (value: TimeValue | null) => void} />
       </div>
 
-      <Button className="mt-4 w-fit" onClick={handleApply}>
+      <Button size="lg" className="mt-4 w-fit" onClick={handleApply}>
         Apply
       </Button>
     </div>

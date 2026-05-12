@@ -130,7 +130,7 @@ export function ChangeWorkingHoursInput() {
         })}
       </div>
 
-      <Button className="mt-4 w-fit" onClick={handleSave}>
+      <Button size="lg" className="mt-4 w-fit" onClick={handleSave}>
         Apply
       </Button>
     </div>

@@ -66,7 +66,7 @@ export function SalesChart() {
               <SelectItem value="12m">Últimos 12 meses</SelectItem>
             </SelectContent>
           </Select>
-          <Button variant="outline" className="shrink-0">Exportar</Button>
+          <Button size="lg" variant="outline" className="shrink-0">Exportar</Button>
         </div>
       </CardHeader>
       <CardContent className="p-0 pt-4">

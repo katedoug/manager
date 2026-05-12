@@ -64,7 +64,7 @@ export function EventDetailsDialog({ event, children }: IProps) {
 
           <DialogFooter>
             <EditEventDialog event={event}>
-              <Button type="button" variant="outline">
+              <Button size="lg" type="button" variant="outline">
                 Edit
               </Button>
             </EditEventDialog>

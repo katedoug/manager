@@ -55,7 +55,7 @@ export function GoalsGrid() {
           <Button
             key={p}
             variant="ghost"
-            size="sm"
+            size="lg"
             onClick={() => setPeriod(p)}
             className={cn(
               "cursor-pointer capitalize rounded-md h-7 px-3 text-sm",

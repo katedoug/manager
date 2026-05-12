@@ -159,7 +159,7 @@ function TabCuenta({ userEmail }: { userEmail: string }) {
               </div>
               <AlertDialog>
                 <AlertDialogTrigger asChild>
-                  <Button variant="destructive" type="button">Eliminar Cuenta</Button>
+                  <Button size="lg" variant="destructive" type="button">Eliminar Cuenta</Button>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                   <AlertDialogHeader>
@@ -182,8 +182,8 @@ function TabCuenta({ userEmail }: { userEmail: string }) {
         </Card>
 
         <div className="flex gap-2">
-          <Button type="submit">Guardar Cambios</Button>
-          <Button variant="outline" type="reset">Cancelar</Button>
+          <Button size="lg" type="submit">Guardar Cambios</Button>
+          <Button size="lg" variant="outline" type="reset">Cancelar</Button>
         </div>
       </form>
     </Form>
@@ -332,11 +332,11 @@ function TabPerfil({ clinicName, clinicAddress, clinicPhone, clinicEmail, clinic
                       </Avatar>
                       <div className="flex flex-col gap-2">
                         <div className="flex gap-2">
-                          <Button variant="default" size="sm" type="button" onClick={() => fileInputRef.current?.click()}>
+                          <Button variant="default" size="lg" type="button" onClick={() => fileInputRef.current?.click()}>
                             <Upload className="mr-2 h-4 w-4" />
                             Subir foto
                           </Button>
-                          <Button variant="outline" size="sm" type="button" onClick={() => setProfileImage(null)}>
+                          <Button variant="outline" size="lg" type="button" onClick={() => setProfileImage(null)}>
                             Restablecer
                           </Button>
                         </div>
@@ -409,7 +409,7 @@ function TabPerfil({ clinicName, clinicAddress, clinicPhone, clinicEmail, clinic
                                 <Input name="citasPassword" type="password" placeholder="Mínimo 6 caracteres" required minLength={6} />
                               </div>
                             </div>
-                            <Button type="submit" size="sm" disabled={isPending}>
+                            <Button type="submit" size="lg" disabled={isPending}>
                               {isPending ? "Configurando…" : "Configurar acceso"}
                             </Button>
                           </form>
@@ -437,7 +437,7 @@ function TabPerfil({ clinicName, clinicAddress, clinicPhone, clinicEmail, clinic
                               {s.label}
                             </span>
                             <span className="w-14 text-xs text-muted-foreground text-right shrink-0">{s.duration} min</span>
-                            <Button variant="outline" size="sm" type="button" className="cursor-pointer shrink-0 text-xs" onClick={() => openEdit(s)}>
+                            <Button variant="outline" size="lg" type="button" className="cursor-pointer shrink-0 text-xs" onClick={() => openEdit(s)}>
                               Editar duración
                             </Button>
                           </div>
@@ -446,8 +446,8 @@ function TabPerfil({ clinicName, clinicAddress, clinicPhone, clinicEmail, clinic
                     </div>
 
                     <div className="flex gap-3">
-                      <Button type="submit">Guardar Cambios</Button>
-                      <Button variant="outline" type="button">Cancelar</Button>
+                      <Button size="lg" type="submit">Guardar Cambios</Button>
+                      <Button size="lg" variant="outline" type="button">Cancelar</Button>
                     </div>
                   </div>
 
@@ -480,8 +480,8 @@ function TabPerfil({ clinicName, clinicAddress, clinicPhone, clinicEmail, clinic
                       </div>
 
                       <div className="flex flex-col gap-2 pt-2">
-                        <Button type="button" onClick={saveEdit} className="w-full">Guardar</Button>
-                        <Button type="button" variant="outline" className="w-full cursor-pointer" onClick={() => setEditingServicio(null)}>Cancelar</Button>
+                        <Button size="lg" type="button" onClick={saveEdit} className="w-full">Guardar</Button>
+                        <Button size="lg" type="button" variant="outline" className="w-full cursor-pointer" onClick={() => setEditingServicio(null)}>Cancelar</Button>
                       </div>
                     </DialogContent>
                   </Dialog>
@@ -572,10 +572,10 @@ function TabPerfil({ clinicName, clinicAddress, clinicPhone, clinicEmail, clinic
               </div>
 
               <div className="flex gap-2 pt-2">
-                <Button type="submit" className="flex-1" disabled={sucursalPending}>
+                <Button size="lg" type="submit" className="flex-1" disabled={sucursalPending}>
                   {sucursalPending ? "Guardando…" : "Crear sucursal"}
                 </Button>
-                <Button type="button" variant="outline" className="flex-1 cursor-pointer" onClick={() => setNuevaSucursalOpen(false)}>
+                <Button size="lg" type="button" variant="outline" className="flex-1 cursor-pointer" onClick={() => setNuevaSucursalOpen(false)}>
                   Cancelar
                 </Button>
               </div>
@@ -613,11 +613,11 @@ function TabApariencia() {
               </div>
             </div>
             <div className="flex flex-wrap gap-3 pt-1">
-              <Button className="gap-2 cursor-pointer bg-[#635BFF] hover:bg-[#5851e0] text-white">
+              <Button size="lg" className="gap-2 cursor-pointer bg-[#635BFF] hover:bg-[#5851e0] text-white">
                 <ExternalLink className="size-3.5" />
                 Abrir Stripe Dashboard
               </Button>
-              <Button variant="outline" className="gap-2 cursor-pointer">
+              <Button size="lg" variant="outline" className="gap-2 cursor-pointer">
                 <ShieldCheck className="size-3.5" />
                 Verificar identidad
               </Button>
@@ -647,7 +647,7 @@ function TabApariencia() {
               Necesitas conectar Stripe antes de poder recibir transferencias a tu cuenta.
             </div>
             <div className="flex flex-wrap gap-3 pt-1">
-              <Button className="gap-2 cursor-pointer bg-[#635BFF] hover:bg-[#5851e0] text-white">
+              <Button size="lg" className="gap-2 cursor-pointer bg-[#635BFF] hover:bg-[#5851e0] text-white">
                 <ExternalLink className="size-3.5" />
                 Conectar con Stripe
               </Button>
@@ -715,8 +715,8 @@ function TabApariencia() {
           </div>
 
           <div className="flex gap-2 pt-2">
-            <Button type="button">Guardar cambios</Button>
-            <Button type="button" variant="outline" className="cursor-pointer">Cancelar</Button>
+            <Button size="lg" type="button">Guardar cambios</Button>
+            <Button size="lg" type="button" variant="outline" className="cursor-pointer">Cancelar</Button>
           </div>
         </CardContent>
       </Card>
@@ -822,8 +822,8 @@ function TabNotificaciones() {
         </Card>
 
         <div className="flex gap-2">
-          <Button type="submit">Guardar Preferencias</Button>
-          <Button variant="outline" type="reset">Cancelar</Button>
+          <Button size="lg" type="submit">Guardar Preferencias</Button>
+          <Button size="lg" variant="outline" type="reset">Cancelar</Button>
         </div>
       </form>
     </Form>

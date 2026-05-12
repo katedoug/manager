@@ -71,7 +71,7 @@ export function RevenueBreakdown() {
               })}
             </SelectContent>
           </Select>
-          <Button variant="outline">Exportar</Button>
+          <Button size="lg" variant="outline">Exportar</Button>
         </div>
       </CardHeader>
       <CardContent className="flex flex-1 justify-center">

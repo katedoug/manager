@@ -151,7 +151,7 @@ export function EventForm({ event, open, onOpenChange, onSave, onDelete }: Event
             <Label>Paciente</Label>
             <Popover open={isEditing ? false : patientOpen} onOpenChange={isEditing ? undefined : setPatientOpen}>
               <PopoverTrigger asChild>
-                <Button
+                <Button size="lg"
                   variant="outline"
                   role="combobox"
                   aria-expanded={patientOpen}
@@ -231,7 +231,7 @@ export function EventForm({ event, open, onOpenChange, onSave, onDelete }: Event
               </Label>
               <Popover open={isEditing ? false : showCalendar} onOpenChange={isEditing ? undefined : setShowCalendar}>
                 <PopoverTrigger asChild>
-                  <Button variant="outline" disabled={isEditing} className="w-full justify-start text-left font-normal">
+                  <Button size="lg" variant="outline" disabled={isEditing} className="w-full justify-start text-left font-normal">
                     {format(formData.date, "PPP", { locale: es })}
                   </Button>
                 </PopoverTrigger>
@@ -310,15 +310,15 @@ export function EventForm({ event, open, onOpenChange, onSave, onDelete }: Event
           {/* Acciones */}
           <div className="flex gap-3 pt-2">
             {isEditing ? (
-              <Button onClick={() => console.log("Solicitar modificación")} className="flex-1 cursor-pointer">
+              <Button size="lg" onClick={() => console.log("Solicitar modificación")} className="flex-1 cursor-pointer">
                 Solicitar Modificación
               </Button>
             ) : (
               <>
-                <Button onClick={handleSave} className="flex-1 cursor-pointer">
+                <Button size="lg" onClick={handleSave} className="flex-1 cursor-pointer">
                   Crear Cita
                 </Button>
-                <Button onClick={() => onOpenChange(false)} variant="outline" className="cursor-pointer">
+                <Button size="lg" onClick={() => onOpenChange(false)} variant="outline" className="cursor-pointer">
                   Cancelar
                 </Button>
               </>

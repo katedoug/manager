@@ -125,7 +125,7 @@ export function RecentTransactions() {
             <CardTitle>Citas Recientes</CardTitle>
             <CardDescription>Últimas consultas registradas</CardDescription>
           </div>
-          <Button variant="outline" size="sm">
+          <Button variant="outline" size="lg">
             <Eye className="h-4 w-4 mr-2" />
             Ver Todas
           </Button>
@@ -152,7 +152,7 @@ export function RecentTransactions() {
                   </div>
                   <Button
                     variant="ghost"
-                    size="sm"
+                    size="lg"
                     className="h-8 w-8 p-0"
                     onClick={() => setSelected(apt)}
                   >
@@ -215,7 +215,7 @@ export function RecentTransactions() {
                 {/* Fotografías */}
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-muted-foreground font-medium uppercase tracking-wide">Fotografías</span>
-                  <Button variant="outline" size="sm" disabled={!selected.photos}>
+                  <Button variant="outline" size="lg" disabled={!selected.photos}>
                     <Images className="h-4 w-4 mr-2" />
                     Ver Fotografías
                   </Button>
@@ -224,11 +224,11 @@ export function RecentTransactions() {
 
               {/* Footer */}
               <SheetFooter className="flex flex-col gap-2 px-6 py-4 border-t">
-                <Button variant="outline" className="w-full justify-center gap-2">
+                <Button size="lg" variant="outline" className="w-full justify-center gap-2">
                   <AlertCircle className="h-4 w-4" />
                   Reportar un problema
                 </Button>
-                <Button
+                <Button size="lg"
                   variant="ghost"
                   className="w-full justify-center gap-2"
                   onClick={() => setSelected(null)}

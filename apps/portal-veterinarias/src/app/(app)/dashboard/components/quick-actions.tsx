@@ -8,7 +8,7 @@ export function QuickActions() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" className="w-full md:w-auto">
+        <Button size="lg" variant="outline" className="w-full md:w-auto">
           <Settings className="h-4 w-4 mr-2" />
           Acciones
         </Button>

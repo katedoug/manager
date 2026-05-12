@@ -85,7 +85,7 @@ export function LoginForm({
         </Field>
 
         <Field>
-          <Button type="submit" disabled={isPending}>
+          <Button size="lg" type="submit" disabled={isPending}>
             {isPending ? "Verificando…" : "Iniciar sesión"}
           </Button>
         </Field>

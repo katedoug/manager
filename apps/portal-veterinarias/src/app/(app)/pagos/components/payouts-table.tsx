@@ -78,7 +78,7 @@ export function PayoutsTable() {
                 <SelectItem value="retenido">Retenidos</SelectItem>
               </SelectContent>
             </Select>
-            <Button variant="outline" size="sm" className="cursor-pointer gap-1.5">
+            <Button variant="outline" size="lg" className="cursor-pointer gap-1.5">
               <Download className="size-3.5" />
               Exportar
             </Button>

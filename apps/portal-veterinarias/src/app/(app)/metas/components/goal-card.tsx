@@ -127,7 +127,7 @@ export function GoalCard({ goal }: { goal: Goal }) {
         {/* Edit button */}
         <Drawer open={open} onOpenChange={setOpen}>
           <DrawerTrigger asChild>
-            <Button variant="outline" size="sm" className="w-full cursor-pointer gap-2">
+            <Button variant="outline" size="lg" className="w-full cursor-pointer gap-2">
               <SlidersHorizontal className="size-3.5" />
               Editar meta
             </Button>
@@ -208,11 +208,11 @@ export function GoalCard({ goal }: { goal: Goal }) {
               </div>
 
               <DrawerFooter className="pt-4">
-                <Button className="cursor-pointer" onClick={() => setOpen(false)}>
+                <Button size="lg" className="cursor-pointer" onClick={() => setOpen(false)}>
                   Guardar meta
                 </Button>
                 <DrawerClose asChild>
-                  <Button variant="outline" className="cursor-pointer">Cancelar</Button>
+                  <Button size="lg" variant="outline" className="cursor-pointer">Cancelar</Button>
                 </DrawerClose>
               </DrawerFooter>
             </div>

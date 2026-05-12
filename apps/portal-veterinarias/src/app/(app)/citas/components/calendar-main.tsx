@@ -205,7 +205,7 @@ export function CalendarMain({
                       </div>
                     </div>
                   </div>
-                  <Button variant="ghost" size="sm" className="cursor-pointer shrink-0 -mr-2" onClick={e => { e.stopPropagation(); handleEventClick(event) }}>
+                  <Button variant="ghost" size="lg" className="cursor-pointer shrink-0 -mr-2" onClick={e => { e.stopPropagation(); handleEventClick(event) }}>
                     <MoreHorizontal className="w-4 h-4" />
                   </Button>
                 </div>
@@ -224,7 +224,7 @@ export function CalendarMain({
         <div className="flex items-center gap-4 flex-wrap">
           <Button
             variant="outline"
-            size="sm"
+            size="lg"
             className="xl:hidden cursor-pointer"
             onClick={onMenuClick}
           >
@@ -232,13 +232,13 @@ export function CalendarMain({
           </Button>
 
           <div className="flex items-center gap-2">
-            <Button variant="outline" size="sm" onClick={() => navigateMonth("prev")} className="cursor-pointer">
+            <Button variant="outline" size="lg" onClick={() => navigateMonth("prev")} className="cursor-pointer">
               <ChevronLeft className="w-4 h-4" />
             </Button>
-            <Button variant="outline" size="sm" onClick={() => navigateMonth("next")} className="cursor-pointer">
+            <Button variant="outline" size="lg" onClick={() => navigateMonth("next")} className="cursor-pointer">
               <ChevronRight className="w-4 h-4" />
             </Button>
-            <Button variant="outline" size="sm" onClick={goToToday} className="cursor-pointer">
+            <Button variant="outline" size="lg" onClick={goToToday} className="cursor-pointer">
               Hoy
             </Button>
           </div>
@@ -256,7 +256,7 @@ export function CalendarMain({
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="cursor-pointer">
+              <Button size="lg" variant="outline" className="cursor-pointer">
                 {viewMode === "month" ? (
                   <Grid3X3 className="w-4 h-4 mr-2" />
                 ) : (
@@ -326,14 +326,14 @@ export function CalendarMain({
                 </Badge>
               </div>
               <div className="flex gap-2 pt-4">
-                <Button
+                <Button size="lg"
                   variant="outline"
                   className="flex-1 cursor-pointer"
                   onClick={() => setShowEventDialog(false)}
                 >
                   Editar
                 </Button>
-                <Button
+                <Button size="lg"
                   variant="destructive"
                   className="flex-1 cursor-pointer"
                   onClick={() => setShowEventDialog(false)}

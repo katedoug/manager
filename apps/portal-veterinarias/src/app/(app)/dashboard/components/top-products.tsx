@@ -71,7 +71,7 @@ export function TopProducts() {
           <CardTitle>Servicios Principales</CardTitle>
           <CardDescription>Servicios con mejor rendimiento este mes</CardDescription>
         </div>
-        <Button variant="outline" size="sm">
+        <Button variant="outline" size="lg">
           <Eye className="h-4 w-4 mr-2" />
           Ver Todos
         </Button>

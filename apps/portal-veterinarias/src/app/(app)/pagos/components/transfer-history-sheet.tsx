@@ -81,7 +81,7 @@ export function TransferHistorySheet({ trigger }: Props) {
             </span>
             <span className="text-muted-foreground ml-3">{transfers.length} transferencias</span>
           </div>
-          <Button variant="outline" size="sm" className="gap-1.5 cursor-pointer">
+          <Button variant="outline" size="lg" className="gap-1.5 cursor-pointer">
             <Download className="size-3.5" />
             Exportar
           </Button>
