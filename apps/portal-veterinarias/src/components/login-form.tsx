@@ -2,8 +2,6 @@
 
 import { useActionState, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { MailIcon } from "lucide-react"
-
 import { login } from "@/app/actions/auth"
 import { useLoader } from "@/components/loader-provider"
 import { cn } from "@/lib/utils"
@@ -13,7 +11,6 @@ import {
   FieldDescription,
   FieldGroup,
   FieldLabel,
-  FieldSeparator,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 
@@ -29,7 +26,7 @@ export function LoginForm({
   useEffect(() => {
     if (state && "success" in state && state.success) {
       show("Iniciando sesión…")
-      const t = setTimeout(() => router.push("/dashboard"), 3000)
+      const t = setTimeout(() => router.push("/"), 3000)
       return () => clearTimeout(t)
     }
   }, [state, show, router])
@@ -93,20 +90,9 @@ export function LoginForm({
           </Button>
         </Field>
 
-        <FieldSeparator>O continúa con</FieldSeparator>
-
-        <Field>
-          <Button variant="outline" type="button" disabled={isPending}>
-            <MailIcon className="size-4" />
-            Login sin Contraseña
-          </Button>
-          <FieldDescription className="text-center">
-            ¿No tienes una cuenta?{" "}
-            <a href="#" className="underline underline-offset-4">
-              Regístrate
-            </a>
-          </FieldDescription>
-        </Field>
+        <FieldDescription className="text-center text-xs text-muted-foreground">
+          El acceso es gestionado por Kate&amp;Doug.
+        </FieldDescription>
       </FieldGroup>
     </form>
   )
