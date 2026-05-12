@@ -14,7 +14,7 @@ import {
 
 import { HideLoader } from "@/components/hide-loader"
 import { TopBar } from "@/components/top-bar"
-import { PlacesAutocompleteInput } from "@/components/places-autocomplete-input"
+import Script from "next/script"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -206,8 +206,13 @@ function TabPerfil({ hasClinics, clinicName, clinicAddress, clinicPhone, clinicE
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [profileImage, setProfileImage] = useState<string | null>(null)
   const accordionRefs = useRef<Record<string, HTMLDivElement | null>>({})
+  const modalAddressRef = useRef<HTMLInputElement>(null)
+  const accordionAddressRef = useRef<HTMLInputElement>(null)
+  const [mapsReady, setMapsReady] = useState(false)
+  const [accordionOpen, setAccordionOpen] = useState("")
 
   function handleAccordionChange(value: string) {
+    setAccordionOpen(value)
     if (!value) return
     const el = accordionRefs.current[value]
     if (el) setTimeout(() => el.scrollIntoView({ behavior: "smooth", block: "start" }), 120)
@@ -289,6 +294,44 @@ function TabPerfil({ hasClinics, clinicName, clinicAddress, clinicPhone, clinicE
     }
   }, [sucursalState])
 
+  // Autocomplete for the "Nueva sucursal" modal address field
+  useEffect(() => {
+    if (!nuevaSucursalOpen || !mapsReady) return
+    const input = modalAddressRef.current
+    if (!input) return
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const g = (window as any).google
+    if (!g?.maps?.places) return
+    const ac = new g.maps.places.Autocomplete(input, {
+      componentRestrictions: { country: "mx" },
+      fields: ["formatted_address"],
+      types: ["address"],
+    })
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return () => { (window as any).google?.maps?.event?.clearInstanceListeners(ac) }
+  }, [nuevaSucursalOpen, mapsReady])
+
+  // Autocomplete for the existing clinic accordion address field
+  useEffect(() => {
+    if (!mapsReady || !accordionOpen) return
+    const input = accordionAddressRef.current
+    if (!input) return
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const g = (window as any).google
+    if (!g?.maps?.places) return
+    const ac = new g.maps.places.Autocomplete(input, {
+      componentRestrictions: { country: "mx" },
+      fields: ["formatted_address"],
+      types: ["address"],
+    })
+    ac.addListener("place_changed", () => {
+      const addr: string = ac.getPlace()?.formatted_address ?? ""
+      form.setValue("location", addr)
+    })
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return () => { (window as any).google?.maps?.event?.clearInstanceListeners(ac) }
+  }, [mapsReady, accordionOpen])
+
   function handleCitasSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     const fd = new FormData(e.currentTarget)
@@ -296,6 +339,14 @@ function TabPerfil({ hasClinics, clinicName, clinicAddress, clinicPhone, clinicE
   }
 
   return (
+    <>
+    {process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY && (
+      <Script
+        src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`}
+        strategy="afterInteractive"
+        onLoad={() => setMapsReady(true)}
+      />
+    )}
     <Form {...form}>
       <form onSubmit={form.handleSubmit(() => {})} className="space-y-6">
 
@@ -379,19 +430,14 @@ function TabPerfil({ hasClinics, clinicName, clinicAddress, clinicPhone, clinicE
                         <FormField control={form.control} name="phone" render={({ field }) => (
                           <FormItem><FormLabel>Teléfono</FormLabel><FormControl><Input type="tel" placeholder="+52 (55) 1234-5678" {...field} /></FormControl><FormMessage /></FormItem>
                         )} />
-                        <FormField control={form.control} name="location" render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Dirección</FormLabel>
-                            <FormControl>
-                              <PlacesAutocompleteInput
-                                placeholder="Av. Principal 123, Col. Centro"
-                                value={field.value ?? ""}
-                                onChange={field.onChange}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )} />
+                        <div className="space-y-2">
+                          <label className="text-sm font-medium leading-none">Dirección</label>
+                          <Input
+                            ref={accordionAddressRef}
+                            placeholder="Av. Principal 123, Col. Centro"
+                            defaultValue={clinicAddress}
+                          />
+                        </div>
                       </div>
                     </div>
 
@@ -576,7 +622,7 @@ function TabPerfil({ hasClinics, clinicName, clinicAddress, clinicPhone, clinicE
                   </div>
                   <div className="col-span-full space-y-1.5">
                     <label className="text-sm font-medium">Dirección</label>
-                    <PlacesAutocompleteInput name="address" placeholder="Av. Principal 123, Col. Centro" />
+                    <Input ref={modalAddressRef} name="address" placeholder="Av. Principal 123, Col. Centro" />
                   </div>
                 </div>
               </div>
@@ -614,6 +660,7 @@ function TabPerfil({ hasClinics, clinicName, clinicAddress, clinicPhone, clinicE
 
       </form>
     </Form>
+    </>
   )
 }
 
