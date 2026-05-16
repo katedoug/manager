@@ -16,7 +16,7 @@ export function PageHero({ title, subtitle, tag }: PageHeroProps) {
           </p>
         )}
 
-        <h1 className="text-5xl font-bold text-gray-900 sm:text-6xl leading-tight max-w-3xl">
+        <h1 className="text-5xl font-bold tracking-tight text-gray-900 sm:text-6xl leading-tight max-w-3xl">
           {title}
         </h1>
         <p className="mt-5 text-xl text-gray-500 max-w-2xl leading-relaxed">
