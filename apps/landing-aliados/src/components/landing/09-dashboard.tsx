@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { ArrowRight, CheckCircle } from "lucide-react"
+import Image from "next/image"
 
 const BULLETS = [
   {
@@ -64,19 +65,9 @@ export function Dashboard() {
             </div>
           </div>
 
-          {/* Right: dashboard mock */}
-          <div className="flex flex-col gap-4">
-            <div className="w-full min-h-[340px] rounded-2xl bg-gray-100 border border-gray-200 flex items-center justify-center">
-              <span className="text-sm text-gray-400">[Dashboard preview — panel principal]</span>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="h-24 rounded-xl bg-gray-50 border border-gray-200 flex items-center justify-center">
-                <span className="text-xs text-gray-400">[Gráfica de citas]</span>
-              </div>
-              <div className="h-24 rounded-xl bg-gray-50 border border-gray-200 flex items-center justify-center">
-                <span className="text-xs text-gray-400">[Resumen financiero]</span>
-              </div>
-            </div>
+          {/* Right: dashboard screenshot */}
+          <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden border border-gray-200">
+            <Image src="/assets/screen1.png" alt="Kate&Doug — panel principal" fill className="object-cover object-left-top" />
           </div>
 
         </div>

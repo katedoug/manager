@@ -1,4 +1,5 @@
 import { Quote, ShieldCheck } from "lucide-react"
+import Image from "next/image"
 
 const COMMITMENTS = [
   {
@@ -33,8 +34,8 @@ export function Testimonial() {
 
           {/* Right: dashboard placeholder + commitments */}
           <div className="flex flex-col gap-6">
-            <div className="w-full aspect-[4/3] rounded-2xl bg-gray-800 border border-gray-700 flex items-center justify-center">
-              <span className="text-sm text-gray-500">[Analytics dashboard screenshot]</span>
+            <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden border border-gray-700">
+              <Image src="/assets/screen2.png" alt="Kate&Doug — panel de agenda" fill className="object-cover object-left-top" />
             </div>
             <div className="grid grid-cols-2 gap-4">
               {COMMITMENTS.map((c) => (
