@@ -20,7 +20,7 @@ export function Hero() {
 
           {/* Left: copy + CTA */}
           <div className="flex flex-col gap-6">
-            <Badge className="w-fit bg-blue-50 text-[#1434CB] border-blue-100 hover:bg-blue-50 text-xs font-medium px-3 py-1">
+            <Badge className="w-fit max-w-full whitespace-normal leading-snug bg-blue-50 text-[#1434CB] border-blue-100 hover:bg-blue-50 text-xs font-medium px-3 py-1">
               Construyendo la red de salud y bienestar animal más grande de México
             </Badge>
 
