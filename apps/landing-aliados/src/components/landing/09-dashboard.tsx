@@ -67,7 +67,7 @@ export function Dashboard() {
 
           {/* Right: dashboard screenshot */}
           <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden border border-gray-200">
-            <Image src="/assets/screen1.png" alt="Kate&Doug — panel principal" fill className="object-cover object-left-top" />
+            <Image src="/assets/screen3.png" alt="Kate&Doug — panel principal" fill className="object-cover object-left-top" />
           </div>
 
         </div>
