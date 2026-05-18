@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { ArrowRight } from "lucide-react"
+import Link from "next/link"
 
 const STEPS = [
   {
@@ -64,8 +65,8 @@ export function Process() {
 
         {/* CTA below */}
         <div className="mt-16 text-center">
-          <Button size="lg" className="gap-2">
-            Comenzar ahora, es gratis <ArrowRight className="h-4 w-4" />
+          <Button size="lg" className="gap-2" asChild>
+            <Link href="/unete">Comenzar ahora, es gratis <ArrowRight className="h-4 w-4" /></Link>
           </Button>
         </div>
       </div>

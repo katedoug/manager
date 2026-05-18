@@ -3,6 +3,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { ArrowRight, CheckCircle, Calendar, ClipboardList, Bell, BarChart2 } from "lucide-react"
 import Image from "next/image"
+import Link from "next/link"
 
 const PHASES = [
   { num: "01", label: "Registro",      desc: "Día 1" },
@@ -203,8 +204,8 @@ export default function ComoFuncionaPage() {
             Tu clínica activa en menos de 24 horas.
           </p>
           <div className="flex flex-col items-center gap-2">
-            <Button size="lg" className="gap-2 bg-white text-[#030027] hover:bg-white/90 font-bold">
-              Quiero unirme a la red <ArrowRight className="h-4 w-4" />
+            <Button size="lg" className="gap-2 bg-white text-[#030027] hover:bg-white/90 font-bold" asChild>
+              <Link href="/unete">Quiero unirme a la red <ArrowRight className="h-4 w-4" /></Link>
             </Button>
             <span className="text-xs text-gray-500">Sin letras chiquitas.</span>
           </div>

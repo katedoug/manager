@@ -56,11 +56,8 @@ export function Dashboard() {
             </ul>
 
             <div className="flex flex-wrap gap-3 mt-2">
-              <Button className="gap-2">
-                Ver demo <ArrowRight className="h-4 w-4" />
-              </Button>
-              <Button variant="outline" className="text-gray-700 border-gray-300">
-                Analytics e insights
+              <Button className="gap-2" asChild>
+                <a href="https://calendar.app.google/rZ7oJ49Z9NJeGR9D7" target="_blank" rel="noopener noreferrer">Agenda una Demo <ArrowRight className="h-4 w-4" /></a>
               </Button>
             </div>
           </div>

@@ -77,8 +77,8 @@ export function Faq() {
                 <p className="text-sm text-white/60 mt-0.5">Nuestro equipo responde en menos de 2 horas.</p>
               </div>
             </div>
-            <Button className="bg-white text-[#030027] hover:bg-white/90 shrink-0 gap-2 font-semibold">
-              Contactar soporte <ArrowRight className="h-4 w-4" />
+            <Button className="bg-white text-[#030027] hover:bg-white/90 shrink-0 gap-2 font-semibold" asChild>
+              <a href="https://calendar.app.google/rZ7oJ49Z9NJeGR9D7" target="_blank" rel="noopener noreferrer">Agenda una Demo <ArrowRight className="h-4 w-4" /></a>
             </Button>
           </div>
         </div>

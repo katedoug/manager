@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { ArrowRight, CheckCircle, ShieldCheck } from "lucide-react"
 import Image from "next/image"
+import { useRouter } from "next/navigation"
+import React from "react"
 
 const TRUST_SIGNALS = [
   "Sin costo de adquisición",
@@ -13,6 +15,19 @@ const TRUST_SIGNALS = [
 ]
 
 export function Hero() {
+  const router = useRouter()
+  const [email, setEmail] = React.useState("")
+  const [error, setError] = React.useState(false)
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setError(true)
+      return
+    }
+    router.push(`/unete?email=${encodeURIComponent(email)}`)
+  }
+
   return (
     <section className="min-h-screen pt-16 flex items-center bg-white">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full py-20">
@@ -37,16 +52,21 @@ export function Hero() {
             </p>
 
             {/* Inline email capture — DoorDash style */}
-            <div className="flex flex-col sm:flex-row gap-3 max-w-md">
-              <Input
-                type="email"
-                placeholder="tuclinica@email.com"
-                className="border-gray-300 h-11 flex-1 rounded-full px-4"
-              />
-              <Button className="h-11 px-6 w-full sm:w-auto shrink-0 gap-2">
-                Comenzar gratis <ArrowRight className="h-4 w-4" />
-              </Button>
-            </div>
+            <form onSubmit={handleSubmit} className="flex flex-col gap-1.5 max-w-md">
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Input
+                  type="email"
+                  placeholder="tuclinica@email.com"
+                  value={email}
+                  onChange={(e) => { setEmail(e.target.value); setError(false) }}
+                  className={`border-gray-300 h-11 flex-1 rounded-full px-4 ${error ? "border-red-400 focus-visible:ring-red-300" : ""}`}
+                />
+                <Button type="submit" className="h-11 px-6 w-full sm:w-auto shrink-0 gap-2">
+                  Comenzar gratis <ArrowRight className="h-4 w-4" />
+                </Button>
+              </div>
+              {error && <p className="text-xs text-red-500 pl-4">Ingresa un correo válido para continuar.</p>}
+            </form>
 
             {/* Trust signals */}
             <ul className="flex flex-col sm:flex-row gap-3 sm:gap-6">
