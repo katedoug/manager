@@ -115,6 +115,9 @@
   * {
     @apply border-border outline-ring/50;
   }
+  a, button {
+    cursor: pointer;
+  }
   body {
     @apply bg-background;
     color: #0D0D0D;
