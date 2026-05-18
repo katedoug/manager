@@ -11,8 +11,16 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { ArrowRight } from "lucide-react"
+import { useRouter } from "next/navigation"
 
 export function CtaForm() {
+  const router = useRouter()
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    router.push("/gracias")
+  }
+
   return (
     <section className="py-24 bg-gray-900">
       <div className="mx-auto max-w-2xl px-4 sm:px-6 lg:px-8">
@@ -31,7 +39,7 @@ export function CtaForm() {
 
         {/* Form card */}
         <div className="bg-white rounded-2xl p-8 shadow-xl">
-          <form className="flex flex-col gap-5">
+          <form className="flex flex-col gap-5" onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div className="flex flex-col gap-1.5">
                 <Label htmlFor="nombre" className="text-gray-700 text-sm font-medium">

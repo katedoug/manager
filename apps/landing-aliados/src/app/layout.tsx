@@ -18,7 +18,7 @@ export default function RootLayout({
         <link rel="stylesheet" href="https://use.typekit.net/tgx2nod.css" />
       </head>
       <body>
-        <ThemeProvider defaultTheme="system" storageKey="kd-theme">
+        <ThemeProvider defaultTheme="light" forcedTheme="light" storageKey="kd-theme">
           {children}
         </ThemeProvider>
       </body>
