@@ -80,8 +80,8 @@ export default function UnetePage() {
             <div className="flex flex-col gap-6">
               <p className="text-xs font-semibold uppercase tracking-widest text-gray-400">Solicitud de ingreso</p>
               <h1 className="text-5xl font-bold tracking-tight text-gray-900 leading-tight">
-                La red de veterinarias más selecta de México.{" "}
-                <span className="text-[#1434CB]">¿Tu clínica cumple el perfil?</span>
+                Más pacientes, sin gastar en marketing.{" "}
+                <span className="text-[#1434CB]">Registra tu clínica.</span>
               </h1>
               <p className="text-xl text-gray-500 leading-relaxed">
                 Si ya tienes una clínica con buena atención y quieres crecer sin gastar en publicidad, esto es para ti. Kate&Doug conecta tutores comprometidos con veterinarias como la tuya, sin costo, sin letra chica.
