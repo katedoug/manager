@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 import { ThemeProvider } from "@/components/theme-provider";
+import { Analytics } from "@vercel/analytics/next";
 export const metadata: Metadata = {
   title: "Veterinarias Aliadas KD",
   description: "Plataforma de gestión para veterinarias aliadas de Kate & Doug.",
@@ -21,6 +22,7 @@ export default function RootLayout({
         <ThemeProvider defaultTheme="light" forcedTheme="light" storageKey="kd-theme">
           {children}
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );
