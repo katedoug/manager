@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/select"
 import { CheckCircle, ArrowRight, MapPin, FileText, Star, Stethoscope } from "lucide-react"
 import { useRouter, useSearchParams } from "next/navigation"
+import posthog from "posthog-js"
 import React from "react"
 
 const SERVICIOS = [
@@ -63,11 +64,20 @@ export default function UnetePage() {
   const [servicios, setServicios] = React.useState<string[]>([])
 
   function toggleServicio(s: string) {
-    setServicios((prev) => prev.includes(s) ? prev.filter((x) => x !== s) : [...prev, s])
+    const isRemoving = servicios.includes(s)
+    setServicios((prev) => isRemoving ? prev.filter((x) => x !== s) : [...prev, s])
+    posthog.capture("unete_service_toggled", { servicio: s, action: isRemoving ? "removed" : "added" })
   }
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
+    const form = e.target as HTMLFormElement
+    const emailInput = form.querySelector<HTMLInputElement>('input[type="email"]')
+    const email = emailInput?.value ?? emailFromHero
+    if (email) {
+      posthog.identify(email, { email })
+    }
+    posthog.capture("unete_form_submitted", { servicios_count: servicios.length, servicios })
     router.push("/gracias")
   }
 

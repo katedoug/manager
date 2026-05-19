@@ -1,3 +1,5 @@
+"use client"
+
 import {
   Accordion,
   AccordionContent,
@@ -6,6 +8,7 @@ import {
 } from "@/components/ui/accordion"
 import { Button } from "@/components/ui/button"
 import { ArrowRight, MessageCircle } from "lucide-react"
+import posthog from "posthog-js"
 
 const FAQS = [
   {
@@ -78,7 +81,7 @@ export function Faq() {
               </div>
             </div>
             <Button className="bg-white text-[#030027] hover:bg-white/90 shrink-0 gap-2 font-semibold" asChild>
-              <a href="https://calendar.app.google/rZ7oJ49Z9NJeGR9D7" target="_blank" rel="noopener noreferrer">Agenda una Demo <ArrowRight className="h-4 w-4" /></a>
+              <a href="https://calendar.app.google/rZ7oJ49Z9NJeGR9D7" target="_blank" rel="noopener noreferrer" onClick={() => posthog.capture("demo_booked_clicked", { source: "faq_section" })}>Agenda una Demo <ArrowRight className="h-4 w-4" /></a>
             </Button>
           </div>
         </div>

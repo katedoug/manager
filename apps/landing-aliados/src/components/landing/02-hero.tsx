@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input"
 import { ArrowRight, CheckCircle, ShieldCheck } from "lucide-react"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
+import posthog from "posthog-js"
 import React from "react"
 
 const TRUST_SIGNALS = [
@@ -25,6 +26,8 @@ export function Hero() {
       setError(true)
       return
     }
+    posthog.identify(email, { email })
+    posthog.capture("hero_email_submitted", { email })
     router.push(`/unete?email=${encodeURIComponent(email)}`)
   }
 

@@ -11,6 +11,7 @@ import { cn } from "@/lib/utils"
 import { Menu, X, ChevronDown } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
+import posthog from "posthog-js"
 import React from "react"
 
 const NAV_LINKS = [
@@ -66,12 +67,12 @@ export function Navbar() {
 
           {/* Desktop actions */}
           <div className="hidden md:flex items-center gap-3">
-            <Button asChild><Link href="/unete">Únete gratis</Link></Button>
+            <Button asChild><Link href="/unete" onClick={() => posthog.capture("navbar_cta_clicked", { location: "desktop" })}>Únete gratis</Link></Button>
           </div>
 
           {/* Mobile: get started + hamburger */}
           <div className="flex md:hidden items-center gap-2">
-            <Button size="sm" className="px-3" asChild><Link href="/unete">Únete</Link></Button>
+            <Button size="sm" className="px-3" asChild><Link href="/unete" onClick={() => posthog.capture("navbar_cta_clicked", { location: "mobile_top" })}>Únete</Link></Button>
             <button
               className="p-2 text-gray-700 rounded-full border border-gray-200 bg-white transition-colors duration-200 hover:bg-gray-50"
               onClick={() => setMobileOpen(true)}
@@ -113,7 +114,7 @@ export function Navbar() {
             />
           </Link>
           <div className="flex items-center gap-2">
-            <Button size="sm" className="px-3" asChild><Link href="/unete">Únete</Link></Button>
+            <Button size="sm" className="px-3" asChild><Link href="/unete" onClick={() => posthog.capture("navbar_cta_clicked", { location: "mobile_menu" })}>Únete</Link></Button>
             <button
               className="p-2 text-gray-700 rounded-full border border-gray-200 bg-white transition-colors duration-200 hover:bg-gray-50"
               onClick={() => setMobileOpen(false)}

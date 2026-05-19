@@ -12,12 +12,20 @@ import {
 } from "@/components/ui/select"
 import { ArrowRight } from "lucide-react"
 import { useRouter } from "next/navigation"
+import posthog from "posthog-js"
 
 export function CtaForm() {
   const router = useRouter()
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
+    const form = e.target as HTMLFormElement
+    const emailInput = form.querySelector<HTMLInputElement>('input[type="email"]')
+    const email = emailInput?.value
+    if (email) {
+      posthog.identify(email, { email })
+    }
+    posthog.capture("cta_form_submitted", { source: "landing_cta_section" })
     router.push("/gracias")
   }
 
